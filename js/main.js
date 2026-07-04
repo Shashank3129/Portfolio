@@ -1,5 +1,122 @@
 lucide.createIcons();
 
+// ===== Scroll-driven animations (Apple style) =====
+// Hero shrinks away, a pinned sentence lights up word by word,
+// product cards rise into place, watermarks drift with parallax.
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const storyText = document.getElementById('story-text');
+    let storyWords = [];
+    if (storyText) {
+        const words = storyText.textContent.trim().split(/\s+/);
+        storyText.textContent = '';
+        words.forEach((word, i) => {
+            const span = document.createElement('span');
+            span.className = 'story-word';
+            span.textContent = word;
+            storyText.appendChild(span);
+            if (i < words.length - 1) storyText.appendChild(document.createTextNode(' '));
+        });
+        storyWords = [...storyText.querySelectorAll('.story-word')];
+    }
+
+    const heroInner = document.getElementById('hero-inner');
+    const storySection = document.getElementById('story');
+    const scrollCards = [...document.querySelectorAll('.scroll-card')];
+    const watermarkEls = [...document.querySelectorAll('.watermark')];
+    const clamp01 = (v) => Math.min(1, Math.max(0, v));
+    let ticking = false;
+
+    function scrollEffects() {
+        ticking = false;
+        const vh = window.innerHeight;
+
+        if (heroInner) {
+            const p = clamp01(window.scrollY / (vh * 0.9));
+            heroInner.style.transform = `translateY(${p * 60}px) scale(${1 - p * 0.08})`;
+            heroInner.style.opacity = 1 - p * 0.85;
+        }
+
+        if (storySection && storyWords.length) {
+            const rect = storySection.getBoundingClientRect();
+            const p = clamp01(-rect.top / (rect.height - vh));
+            storyWords.forEach((word, i) => {
+                const wp = clamp01(p * storyWords.length * 1.15 - i);
+                word.style.opacity = 0.12 + wp * 0.88;
+            });
+        }
+
+        scrollCards.forEach((card) => {
+            const rect = card.getBoundingClientRect();
+            const p = clamp01((vh * 0.92 - rect.top) / (vh * 0.55));
+            if (p < 1) {
+                card.style.transform = `translateY(${(1 - p) * 48}px) scale(${0.94 + p * 0.06})`;
+                card.style.opacity = 0.2 + p * 0.8;
+                card.dataset.settled = '';
+            } else if (card.dataset.settled !== '1') {
+                // Hand the transform back to the hover tilt once the card has settled
+                card.style.transform = '';
+                card.style.opacity = '';
+                card.dataset.settled = '1';
+            }
+        });
+
+        watermarkEls.forEach((wm) => {
+            // Drift left only, so the right-anchored watermark never overflows the page
+            const shift = (1 - wm.getBoundingClientRect().top / vh) * 40;
+            wm.style.transform = `translateX(${-Math.max(0, shift)}px)`;
+        });
+    }
+
+    function requestScrollEffects() {
+        if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(scrollEffects);
+        }
+    }
+    window.addEventListener('scroll', requestScrollEffects, { passive: true });
+    window.addEventListener('resize', requestScrollEffects, { passive: true });
+    scrollEffects();
+
+    // Rotating word in the hero headline
+    const rotator = document.getElementById('word-rotator');
+    if (rotator) {
+        const rotatorWords = [...rotator.querySelectorAll('.rotator-word')];
+        let activeWord = 0;
+        setInterval(() => {
+            const prev = rotatorWords[activeWord];
+            activeWord = (activeWord + 1) % rotatorWords.length;
+            const next = rotatorWords[activeWord];
+            prev.classList.add('is-exit');
+            prev.classList.remove('is-active');
+            // Reset the incoming word below the line without animating the reset
+            next.style.transition = 'none';
+            next.classList.remove('is-exit');
+            void next.offsetWidth;
+            next.style.transition = '';
+            next.classList.add('is-active');
+        }, 2400);
+    }
+
+    // Scroll-zoom showcase (GSAP ScrollTrigger)
+    if (window.gsap && window.ScrollTrigger && document.getElementById('zoom-stage')) {
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.set('.zoom-callout', { autoAlpha: 0, y: 26, scale: 0.9 });
+        gsap.timeline({
+            scrollTrigger: {
+                trigger: '#showcase',
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 0.6,
+            },
+        })
+            .fromTo('#zoom-stage',
+                { scale: 0.52, yPercent: 8, autoAlpha: 0.7 },
+                { scale: 1, yPercent: 0, autoAlpha: 1, ease: 'power1.inOut', duration: 3 })
+            .to('#showcase-intro', { autoAlpha: 0, y: -40, duration: 0.7 }, 0.6)
+            .to('.zoom-callout', { autoAlpha: 1, y: 0, scale: 1, stagger: 0.5, duration: 0.6, ease: 'back.out(1.6)' }, 2.1);
+    }
+}
+
 // Theme toggle
 document.getElementById('theme-toggle').addEventListener('click', () => {
     const isDark = document.documentElement.classList.toggle('dark');
