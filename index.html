@@ -9,11 +9,10 @@
     <meta property="og:description" content="Product manager who actually ships. 5+ years in B2B SaaS, plus three products built solo.">
     <meta property="og:type" content="website">
 
-    <!-- Set theme before paint to avoid flash -->
+    <!-- Set theme before paint to avoid flash. Dark by default; the toggle stores the visitor's choice. -->
     <script>
         (function () {
-            var saved = localStorage.theme;
-            if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            if (localStorage.theme !== 'light') {
                 document.documentElement.classList.add('dark');
             }
         })();
