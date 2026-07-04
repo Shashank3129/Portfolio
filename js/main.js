@@ -114,6 +114,14 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                 { scale: 1, yPercent: 0, autoAlpha: 1, ease: 'power1.inOut', duration: 3 })
             .to('#showcase-intro', { autoAlpha: 0, y: -40, duration: 0.7 }, 0.6)
             .to('.zoom-callout', { autoAlpha: 1, y: 0, scale: 1, stagger: 0.5, duration: 0.6, ease: 'back.out(1.6)' }, 2.1);
+
+        // Re-measure after full load: fonts, images, and the mobile URL bar
+        // can all shift layout after ScrollTrigger's first measurement
+        if (document.readyState === 'complete') {
+            ScrollTrigger.refresh();
+        } else {
+            window.addEventListener('load', () => ScrollTrigger.refresh());
+        }
     }
 }
 
