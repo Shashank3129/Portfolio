@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -8,31 +8,22 @@
     <meta property="og:title" content="Shashank Singh | Product Manager">
     <meta property="og:description" content="Product manager who actually ships. 5+ years in B2B SaaS, plus three products built solo.">
     <meta property="og:type" content="website">
-    <meta name="theme-color" content="#0b100e">
+    <meta name="theme-color" content="#f5f6f8">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-    <!-- Set theme before paint to avoid a flash. Dark by default; the toggle stores the visitor's choice. -->
+    <!-- Set theme before paint to avoid a flash. Light by default; the toggle stores the visitor's choice. -->
     <script>
         (function () {
-            var theme = 'dark';
-            try { if (localStorage.getItem('theme') === 'light') theme = 'light'; } catch (e) {}
-            var root = document.documentElement;
-            root.setAttribute('data-theme', theme);
-            // Intro loader once per visit, never for reduced motion
-            var seen = false;
-            try { seen = sessionStorage.getItem('intro-seen') === '1'; } catch (e) {}
-            if (!seen && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                root.classList.add('is-loading');
-                // Safety net in case the scripts never arrive
-                setTimeout(function () { root.classList.remove('is-loading'); }, 5000);
-            }
+            var theme = 'light';
+            try { if (localStorage.getItem('theme') === 'dark') theme = 'dark'; } catch (e) {}
+            document.documentElement.setAttribute('data-theme', theme);
         })();
     </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -40,33 +31,23 @@
 <body>
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
         <symbol id="i-arrow-down" viewBox="0 0 256 256"><path d="M205.66,149.66l-72,72a8,8,0,0,1-11.32,0l-72-72a8,8,0,0,1,11.32-11.32L120,196.69V40a8,8,0,0,1,16,0V196.69l58.34-58.35a8,8,0,0,1,11.32,11.32Z"/></symbol>
+        <symbol id="i-arrow-right" viewBox="0 0 256 256"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></symbol>
         <symbol id="i-arrow-up-right" viewBox="0 0 256 256"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></symbol>
         <symbol id="i-check-circle" viewBox="0 0 256 256"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></symbol>
         <symbol id="i-envelope-simple" viewBox="0 0 256 256"><path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM203.43,64,128,133.15,52.57,64ZM216,192H40V74.19l82.59,75.71a8,8,0,0,0,10.82,0L216,74.19V192Z"/></symbol>
         <symbol id="i-file-arrow-down" viewBox="0 0 256 256"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-42.34-61.66a8,8,0,0,1,0,11.32l-24,24a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L120,164.69V120a8,8,0,0,1,16,0v44.69l10.34-10.35A8,8,0,0,1,157.66,154.34Z"/></symbol>
         <symbol id="i-github-logo" viewBox="0 0 256 256"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></symbol>
-        <symbol id="i-hammer" viewBox="0 0 256 256"><path d="M251.34,112,183.88,44.08a96.1,96.1,0,0,0-135.77,0l-.09.09L34.25,58.4A8,8,0,0,0,45.74,69.53L59.47,55.35a79.92,79.92,0,0,1,18.71-13.9L124.68,88l-96,96a16,16,0,0,0,0,22.63l20.69,20.69a16,16,0,0,0,22.63,0l96-96,14.34,14.34h0L200,163.3a16,16,0,0,0,22.63,0l28.69-28.69A16,16,0,0,0,251.34,112ZM60.68,216,40,195.31l68-68L128.68,148ZM162.34,114.32,140,136.67,119.31,116l22.35-22.35a8,8,0,0,0,0-11.32L94.32,35a80,80,0,0,1,78.23,20.41l44.22,44.51L188,128.66l-14.34-14.34A8,8,0,0,0,162.34,114.32Zm49,37.66-12-12L228,111.25l12,12Z"/></symbol>
         <symbol id="i-linkedin-logo" viewBox="0 0 256 256"><path d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24Zm0,192H40V40H216V216ZM96,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Zm88,28v36a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140ZM100,84A12,12,0,1,1,88,72,12,12,0,0,1,100,84Z"/></symbol>
         <symbol id="i-list" viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></symbol>
         <symbol id="i-map-pin" viewBox="0 0 256 256"><path d="M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z"/></symbol>
         <symbol id="i-moon" viewBox="0 0 256 256"><path d="M233.54,142.23a8,8,0,0,0-8-2,88.08,88.08,0,0,1-109.8-109.8,8,8,0,0,0-10-10,104.84,104.84,0,0,0-52.91,37A104,104,0,0,0,136,224a103.09,103.09,0,0,0,62.52-20.88,104.84,104.84,0,0,0,37-52.91A8,8,0,0,0,233.54,142.23ZM188.9,190.34A88,88,0,0,1,65.66,67.11a89,89,0,0,1,31.4-26A106,106,0,0,0,96,56,104.11,104.11,0,0,0,200,160a106,106,0,0,0,14.92-1.06A89,89,0,0,1,188.9,190.34Z"/></symbol>
         <symbol id="i-paper-plane-tilt" viewBox="0 0 256 256"><path d="M227.32,28.68a16,16,0,0,0-15.66-4.08l-.15,0L19.57,82.84a16,16,0,0,0-2.49,29.8L102,154l41.3,84.87A15.86,15.86,0,0,0,157.74,248q.69,0,1.38-.06a15.88,15.88,0,0,0,14-11.51l58.2-191.94c0-.05,0-.1,0-.15A16,16,0,0,0,227.32,28.68ZM157.83,231.85l-.05.14,0-.07-40.06-82.3,48-48a8,8,0,0,0-11.31-11.31l-48,48L24.08,98.25l-.07,0,.14,0L216,40Z"/></symbol>
         <symbol id="i-sun" viewBox="0 0 256 256"><path d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"/></symbol>
-        <symbol id="i-target" viewBox="0 0 256 256"><path d="M221.87,83.16A104.1,104.1,0,1,1,195.67,49l22.67-22.68a8,8,0,0,1,11.32,11.32l-96,96a8,8,0,0,1-11.32-11.32l27.72-27.72a40,40,0,1,0,17.87,31.09,8,8,0,1,1,16-.9,56,56,0,1,1-22.38-41.65L184.3,60.39a87.88,87.88,0,1,0,23.13,29.67,8,8,0,0,1,14.44-6.9Z"/></symbol>
-        <symbol id="i-trophy" viewBox="0 0 256 256"><path d="M232,64H208V48a8,8,0,0,0-8-8H56a8,8,0,0,0-8,8V64H24A16,16,0,0,0,8,80V96a40,40,0,0,0,40,40h3.65A80.13,80.13,0,0,0,120,191.61V216H96a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16H136V191.58c31.94-3.23,58.44-25.64,68.08-55.58H208a40,40,0,0,0,40-40V80A16,16,0,0,0,232,64ZM48,120A24,24,0,0,1,24,96V80H48v32q0,4,.39,8Zm144-8.9c0,35.52-29,64.64-64,64.9a64,64,0,0,1-64-64V56H192ZM232,96a24,24,0,0,1-24,24h-.5a81.81,81.81,0,0,0,.5-8.9V80h24Z"/></symbol>
         <symbol id="i-x" viewBox="0 0 256 256"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></symbol>
     </svg>
 
     <a class="skip-link" href="#main">Skip to content</a>
-    <div class="grain" aria-hidden="true"></div>
     <div class="progress" aria-hidden="true"></div>
-
-    <!-- ===================== PRELOADER ===================== -->
-    <div class="preloader" id="preloader" aria-hidden="true">
-        <div class="preloader__name mono"><span>Shashank Singh</span><span>Product Manager</span></div>
-        <div class="preloader__count"><span id="preloader-count">0</span></div>
-        <div class="preloader__bar"></div>
-    </div>
 
     <!-- ===================== NAV ===================== -->
     <nav class="nav" id="navbar" aria-label="Primary">
@@ -88,12 +69,12 @@
 
             <div class="nav__actions">
                 <button id="theme-toggle" class="icon-btn" aria-label="Toggle light and dark mode">
-                    <svg class="icon theme-icon-dark"><use href="#i-sun"/></svg>
-                    <svg class="icon theme-icon-light"><use href="#i-moon"/></svg>
+                    <svg class="icon theme-icon-dark"><use href="#i-moon"/></svg>
+                    <svg class="icon theme-icon-light"><use href="#i-sun"/></svg>
                 </button>
-                <a class="btn btn--primary btn--sm nav__resume resume-link" href="https://drive.google.com/file/d/1mXUNZkbzMPZu5fDIAiXEY95HeJ7bUFOY/view?usp=sharing" target="_blank" rel="noopener">
-                    <svg class="icon"><use href="#i-file-arrow-down"/></svg>
+                <a class="btn btn--dark btn--sm nav__resume resume-link" href="https://drive.google.com/file/d/1mXUNZkbzMPZu5fDIAiXEY95HeJ7bUFOY/view?usp=sharing" target="_blank" rel="noopener">
                     Resume
+                    <svg class="icon icon-arrow-ur"><use href="#i-arrow-up-right"/></svg>
                 </a>
                 <button id="mobile-menu-btn" class="icon-btn menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
                     <svg class="icon"><use href="#i-list"/></svg>
@@ -108,15 +89,15 @@
             <svg class="icon"><use href="#i-x"/></svg>
         </button>
         <div class="menu__links">
-            <a href="#products" class="menu__link">Products <svg class="icon"><use href="#i-arrow-up-right"/></svg></a>
-            <a href="#experience" class="menu__link">Experience <svg class="icon"><use href="#i-arrow-up-right"/></svg></a>
-            <a href="#skills" class="menu__link">Skills <svg class="icon"><use href="#i-arrow-up-right"/></svg></a>
-            <a href="#achievements" class="menu__link">Achievements <svg class="icon"><use href="#i-arrow-up-right"/></svg></a>
-            <a href="#writing" class="menu__link">Writing <svg class="icon"><use href="#i-arrow-up-right"/></svg></a>
-            <a href="#contact" class="menu__link">Contact <svg class="icon"><use href="#i-arrow-up-right"/></svg></a>
+            <a href="#products" class="menu__link">Products <svg class="icon"><use href="#i-arrow-right"/></svg></a>
+            <a href="#experience" class="menu__link">Experience <svg class="icon"><use href="#i-arrow-right"/></svg></a>
+            <a href="#skills" class="menu__link">Skills <svg class="icon"><use href="#i-arrow-right"/></svg></a>
+            <a href="#achievements" class="menu__link">Achievements <svg class="icon"><use href="#i-arrow-right"/></svg></a>
+            <a href="#writing" class="menu__link">Writing <svg class="icon"><use href="#i-arrow-right"/></svg></a>
+            <a href="#contact" class="menu__link">Contact <svg class="icon"><use href="#i-arrow-right"/></svg></a>
         </div>
         <div class="menu__foot">
-            <a class="btn btn--primary resume-link" href="https://drive.google.com/file/d/1mXUNZkbzMPZu5fDIAiXEY95HeJ7bUFOY/view?usp=sharing" target="_blank" rel="noopener">
+            <a class="btn btn--dark resume-link" href="https://drive.google.com/file/d/1mXUNZkbzMPZu5fDIAiXEY95HeJ7bUFOY/view?usp=sharing" target="_blank" rel="noopener">
                 <svg class="icon"><use href="#i-file-arrow-down"/></svg>
                 Download resume
             </a>
@@ -126,50 +107,44 @@
 
     <!-- ===================== HERO ===================== -->
     <header id="top" class="hero">
-        <div class="hero__canvas" id="hero-canvas" aria-hidden="true"></div>
-        <div class="hero__fallback" aria-hidden="true"></div>
-        <div class="hero__wash" aria-hidden="true"></div>
+        <div class="hero__sticky">
+            <div class="hero__glow" aria-hidden="true"></div>
+            <div class="hero__fallback" aria-hidden="true"></div>
+            <div class="hero__canvas" id="hero-canvas" aria-hidden="true"></div>
 
-        <div class="wrap hero__inner" id="hero-inner">
-            <h1 class="display hero__title" id="hero-title" aria-label="Product manager who actually ships.">
-                <span class="line" data-split>Product manager</span>
-                <span class="line"><span data-split>who actually</span>
-                    <span class="rotator" id="word-rotator" aria-hidden="true">
-                        <span class="rotator__word">ships.</span>
-                        <span class="rotator__word">builds.</span>
-                        <span class="rotator__word">delivers.</span>
-                        <span class="rotator__word">scales.</span>
+            <div class="wrap hero__copy" id="hero-copy">
+                <p class="hero__intro hero-fade"><i aria-hidden="true"></i>Open to Product Manager roles</p>
+                <h1 class="display hero__title" id="hero-title" aria-label="Product manager who actually ships.">
+                    <span class="line" data-split>Product manager</span>
+                    <span class="line"><span data-split>who actually</span>
+                        <span class="rotator" id="word-rotator" aria-hidden="true">
+                            <span class="rotator__word">ships.</span>
+                            <span class="rotator__word">builds.</span>
+                            <span class="rotator__word">delivers.</span>
+                            <span class="rotator__word">scales.</span>
+                        </span>
                     </span>
-                </span>
-            </h1>
-
-            <div class="hero__row">
-                <div>
-                    <p class="hero__sub hero-fade">
-                        I'm Shashank. Five years building <strong>B2B SaaS</strong> at work, and my own <strong>AI products</strong> after hours.
-                    </p>
-                    <p class="hero__avail hero-fade">Open to Product Manager roles</p>
-                </div>
+                </h1>
+                <p class="hero__sub hero-fade">I'm Shashank. Five years building B2B SaaS at work, and my own AI products after hours.</p>
                 <div class="hero__ctas hero-fade">
                     <a href="#products" class="btn btn--primary magnetic">
                         See what I've built
                         <svg class="icon icon-arrow-d"><use href="#i-arrow-down"/></svg>
                     </a>
-                    <a href="#contact" class="btn btn--ghost magnetic">
-                        <svg class="icon"><use href="#i-envelope-simple"/></svg>
-                        Get in touch
-                    </a>
+                    <a href="#contact" class="btn btn--ghost magnetic">Get in touch</a>
                 </div>
             </div>
+
+            <p class="hero__caption" id="hero-caption"><strong>5+ years</strong> in B2B SaaS. <strong>3 products</strong> designed, coded and launched solo.</p>
         </div>
     </header>
 
     <main id="main">
-        <!-- ===================== STORY (pinned, word-by-word) ===================== -->
+        <!-- ===================== STATEMENT ===================== -->
         <section id="story" class="story" aria-label="About">
             <div class="story__pin">
                 <div class="wrap">
-                    <p class="label" style="margin-bottom: 28px">The short version</p>
+                    <p class="kicker" style="text-align: center; margin-bottom: 28px">The short version</p>
                     <p class="story__text" id="story-text">Most PMs write the spec and wait for engineering. I write the spec, then go build the thing myself. That difference shows up in everything I ship.</p>
 
                     <div class="ledger">
@@ -194,11 +169,11 @@
             </div>
         </section>
 
-        <!-- ===================== SHOWCASE (3D unfold) ===================== -->
+        <!-- ===================== SHOWCASE ===================== -->
         <section id="showcase" class="showcase" aria-label="Pantheon, a closer look">
             <div class="showcase__pin">
                 <div class="showcase__intro" id="showcase-intro">
-                    <p class="label" style="margin-bottom: 14px">Closer look</p>
+                    <p class="kicker" style="margin-bottom: 14px">Pantheon</p>
                     <h2 class="h2" data-reveal>Ask one question. Get a council.</h2>
                 </div>
 
@@ -244,122 +219,110 @@
         </section>
 
         <!-- ===================== PRODUCTS ===================== -->
-        <section id="products" class="section products">
-            <div class="products__pin">
-                <div class="wrap">
-                    <div class="head head--split">
-                        <h2 class="h2" data-reveal>Products I've built myself</h2>
-                        <p class="lede">I designed, coded, and launched these on my own, from the first database table to the landing page.</p>
-                    </div>
+        <section id="products" class="section">
+            <div class="wrap">
+                <div class="head head--center">
+                    <h2 class="h2" data-reveal>Products I've built myself</h2>
+                    <p class="lede center">I designed, coded, and launched these on my own, from the first database table to the landing page.</p>
                 </div>
 
-                <div class="products__track" id="products-track">
+                <div class="bento">
                     <!-- Pantheon -->
-                    <article class="product spot">
-                        <div class="product__top">
-                            <span class="status status--live">Live</span>
-                            <span class="product__idx mono">AI decision council</span>
-                        </div>
-                        <div class="product__body">
-                            <div>
-                                <h3 class="product__name">Pantheon</h3>
-                                <p class="product__desc" style="margin-top: 18px">
-                                    Ask one question, get answers from a council of <strong>130+ expert personas across 13 domains</strong>:
-                                    strategy, engineering, design, finance, and more. Each persona reasons differently and argues in its own voice.
-                                </p>
-                                <div class="chips">
-                                    <span class="chip">React + TypeScript</span>
-                                    <span class="chip">Tailwind</span>
-                                    <span class="chip">Supabase</span>
-                                    <span class="chip">LLM orchestration</span>
-                                </div>
-                                <a class="btn btn--primary product__cta" href="https://pantheon.so" target="_blank" rel="noopener">
-                                    Visit pantheon.so
-                                    <svg class="icon icon-arrow-ur"><use href="#i-arrow-up-right"/></svg>
-                                </a>
+                    <article class="tile tile--wide">
+                        <div>
+                            <div class="tile__top">
+                                <span class="status status--live">Live</span>
+                                <span class="tile__kind mono">AI decision council</span>
                             </div>
-                            <div class="product__visual tilt" aria-hidden="true">
-                                <div class="council" id="council">
-                                    <div class="council__ring"><div class="council__spin" id="council-spin"></div></div>
-                                    <div class="council__core"><b>130+</b><span>personas</span></div>
-                                </div>
+                            <h3 class="tile__name">Pantheon</h3>
+                            <p class="tile__desc">
+                                Ask one question, get answers from a council of <strong>130+ expert personas across 13 domains</strong>:
+                                strategy, engineering, design, finance, and more. Each persona reasons differently and argues in its own voice.
+                            </p>
+                            <div class="chips">
+                                <span class="chip">React + TypeScript</span>
+                                <span class="chip">Tailwind</span>
+                                <span class="chip">Supabase</span>
+                                <span class="chip">LLM orchestration</span>
+                            </div>
+                            <a class="btn btn--primary tile__cta" href="https://pantheon.so" target="_blank" rel="noopener">
+                                Visit pantheon.so
+                                <svg class="icon icon-arrow-ur"><use href="#i-arrow-up-right"/></svg>
+                            </a>
+                        </div>
+                        <div class="tile__visual tilt" aria-hidden="true">
+                            <div class="council" id="council">
+                                <div class="council__ring"><div class="council__spin" id="council-spin"></div></div>
+                                <div class="council__core"><b>130+</b><span>personas</span></div>
                             </div>
                         </div>
                     </article>
 
                     <!-- Resume Intelligence -->
-                    <article class="product spot">
-                        <div class="product__top">
-                            <span class="status status--live">Live</span>
-                            <span class="product__idx mono">Career coaching AI</span>
-                        </div>
-                        <div class="product__body">
-                            <div>
-                                <h3 class="product__name">Resume Intelligence</h3>
-                                <p class="product__desc" style="margin-top: 18px">
-                                    Upload your resume and get <strong>scored feedback against the role you want</strong>.
-                                    Then practice with an AI interviewer that digs into your weak spots instead of asking generic questions.
-                                </p>
-                                <div class="chips">
-                                    <span class="chip">FastAPI</span>
-                                    <span class="chip">Supabase</span>
-                                    <span class="chip">OpenRouter</span>
-                                    <span class="chip">React</span>
-                                </div>
-                                <a class="btn btn--ghost product__cta" href="#contact">
-                                    Ask me for a demo
-                                    <svg class="icon icon-arrow-ur"><use href="#i-arrow-up-right"/></svg>
-                                </a>
+                    <article class="tile">
+                        <div>
+                            <div class="tile__top">
+                                <span class="status status--live">Live</span>
+                                <span class="tile__kind mono">Career coaching AI</span>
                             </div>
-                            <div class="product__visual tilt" aria-hidden="true">
-                                <div class="score" id="score">
-                                    <svg viewBox="0 0 120 120">
-                                        <circle class="score__track" cx="60" cy="60" r="50"/>
-                                        <circle class="score__bar" id="score-bar" cx="60" cy="60" r="50" pathLength="100" stroke-dasharray="100" stroke-dashoffset="14"/>
-                                    </svg>
-                                    <div class="score__num"><b id="score-num">86</b><span>role match</span></div>
-                                </div>
-                                <div class="score__tags">
-                                    <span class="score__tag">Impact verbs</span>
-                                    <span class="score__tag">Metrics present</span>
-                                    <span class="score__tag">Gap: system design</span>
-                                </div>
+                            <h3 class="tile__name">Resume Intelligence</h3>
+                            <p class="tile__desc">
+                                Upload your resume and get <strong>scored feedback against the role you want</strong>.
+                                Then practice with an AI interviewer that digs into your weak spots instead of asking generic questions.
+                            </p>
+                            <div class="chips">
+                                <span class="chip">FastAPI</span>
+                                <span class="chip">Supabase</span>
+                                <span class="chip">OpenRouter</span>
+                                <span class="chip">React</span>
+                            </div>
+                            <a class="btn btn--ghost tile__cta" href="#contact">
+                                Ask me for a demo
+                                <svg class="icon icon-arrow-r"><use href="#i-arrow-right"/></svg>
+                            </a>
+                        </div>
+                        <div class="tile__visual tilt" aria-hidden="true">
+                            <div class="score" id="score">
+                                <svg viewBox="0 0 120 120">
+                                    <circle class="score__track" cx="60" cy="60" r="50"/>
+                                    <circle class="score__bar" id="score-bar" cx="60" cy="60" r="50" pathLength="100" stroke-dasharray="100" stroke-dashoffset="14"/>
+                                </svg>
+                                <div class="score__num"><b id="score-num">86</b><span>role match</span></div>
+                            </div>
+                            <div class="score__tags">
+                                <span class="score__tag">Impact verbs</span>
+                                <span class="score__tag">Metrics present</span>
+                                <span class="score__tag">Gap: system design</span>
                             </div>
                         </div>
                     </article>
 
                     <!-- DineFlow -->
-                    <article class="product spot">
-                        <div class="product__top">
-                            <span class="status status--dev">In development</span>
-                            <span class="product__idx mono">Restaurant ordering</span>
+                    <article class="tile">
+                        <div>
+                            <div class="tile__top">
+                                <span class="status">In development</span>
+                                <span class="tile__kind mono">Restaurant ordering</span>
+                            </div>
+                            <h3 class="tile__name">DineFlow</h3>
+                            <p class="tile__desc">
+                                <strong>QR table ordering for restaurants.</strong> Diners scan, browse, and order without flagging down staff.
+                                Operators get a live order queue and simple menu management, built around the economics of Indian restaurants:
+                                quick onboarding and no extra hardware.
+                            </p>
+                            <div class="chips">
+                                <span class="chip">Vite + React + TS</span>
+                                <span class="chip">Tailwind</span>
+                                <span class="chip">Supabase</span>
+                                <span class="chip">B2B2C</span>
+                            </div>
+                            <span class="btn btn--ghost tile__cta" aria-disabled="true" style="pointer-events: none">Launching soon</span>
                         </div>
-                        <div class="product__body">
-                            <div>
-                                <h3 class="product__name">DineFlow</h3>
-                                <p class="product__desc" style="margin-top: 18px">
-                                    <strong>QR table ordering for restaurants.</strong> Diners scan, browse, and order without flagging down staff.
-                                    Operators get a live order queue and simple menu management, built around the economics of Indian restaurants:
-                                    quick onboarding and no extra hardware.
-                                </p>
-                                <div class="chips">
-                                    <span class="chip">Vite + React + TS</span>
-                                    <span class="chip">Tailwind</span>
-                                    <span class="chip">Supabase</span>
-                                    <span class="chip">B2B2C</span>
-                                </div>
-                                <span class="btn btn--ghost product__cta" aria-disabled="true" style="pointer-events: none">Launching soon</span>
-                            </div>
-                            <div class="product__visual product__visual--qr tilt" aria-hidden="true">
-                                <div class="qr" id="qr"></div>
-                                <span class="order">Place order · ₹640</span>
-                            </div>
+                        <div class="tile__visual tile__visual--qr tilt" aria-hidden="true">
+                            <div class="qr" id="qr"></div>
+                            <span class="order">Place order · ₹640</span>
                         </div>
                     </article>
-                </div>
-
-                <div class="wrap">
-                    <div class="products__meter" aria-hidden="true"><i id="products-meter"></i></div>
                 </div>
             </div>
         </section>
@@ -368,7 +331,7 @@
         <section id="experience" class="section">
             <div class="wrap xp">
                 <div class="xp__aside">
-                    <p class="label" style="margin-bottom: 20px">Career</p>
+                    <p class="kicker" style="margin-bottom: 18px">Career</p>
                     <h2 class="h2" data-reveal>Where I've worked</h2>
                     <p class="lede" style="margin-top: 20px">I started out in sales, moved into product in 2021, and haven't looked back.</p>
                     <div class="xp__now" aria-hidden="true"><span id="xp-year">2025</span></div>
@@ -458,41 +421,46 @@
 
         <!-- ===================== SKILLS ===================== -->
         <section id="skills" class="section">
-            <div class="wrap skills__grid">
-                <div>
+            <div class="wrap">
+                <div class="head head--center">
                     <h2 class="h2" data-reveal>What I bring to the table</h2>
-                    <div class="tabs" role="tablist" aria-label="Skill groups">
-                        <button class="tab" role="tab" id="tab-craft" aria-controls="panel-craft" aria-selected="true">Product Craft</button>
-                        <button class="tab" role="tab" id="tab-data" aria-controls="panel-data" aria-selected="false" tabindex="-1">Data and Analytics</button>
-                        <button class="tab" role="tab" id="tab-tech" aria-controls="panel-tech" aria-selected="false" tabindex="-1">Technical and AI</button>
-                    </div>
-                    <ul class="panel" role="tabpanel" id="panel-craft" aria-labelledby="tab-craft">
-                        <li><span>01</span>Discovery and user research</li>
-                        <li><span>02</span>Roadmapping and prioritization</li>
-                        <li><span>03</span>PRDs and technical specs</li>
-                        <li><span>04</span>Stakeholder management</li>
-                        <li><span>05</span>Agile delivery leadership</li>
-                    </ul>
-                    <ul class="panel" role="tabpanel" id="panel-data" aria-labelledby="tab-data" hidden>
-                        <li><span>01</span>SQL and funnel analysis</li>
-                        <li><span>02</span>GA4, Power BI, Tableau</li>
-                        <li><span>03</span>A/B testing and experimentation</li>
-                        <li><span>04</span>Metrics definition and dashboards</li>
-                        <li><span>05</span>Unit economics</li>
-                    </ul>
-                    <ul class="panel" role="tabpanel" id="panel-tech" aria-labelledby="tab-tech" hidden>
-                        <li><span>01</span>React, TypeScript, Tailwind</li>
-                        <li><span>02</span>FastAPI and REST API design</li>
-                        <li><span>03</span>Supabase / Postgres</li>
-                        <li><span>04</span>LLM integration and prompt design</li>
-                        <li><span>05</span>AI-assisted development workflows</li>
-                    </ul>
                 </div>
-
-                <div class="sphere" id="sphere" aria-hidden="true"></div>
+                <div class="skillset">
+                    <div class="skillset__group">
+                        <h3>Product Craft</h3>
+                        <ul>
+                            <li>Discovery and user research</li>
+                            <li>Roadmapping and prioritization</li>
+                            <li>PRDs and technical specs</li>
+                            <li>Stakeholder management</li>
+                            <li>Agile delivery leadership</li>
+                        </ul>
+                    </div>
+                    <div class="skillset__group">
+                        <h3>Data and Analytics</h3>
+                        <ul>
+                            <li>SQL and funnel analysis</li>
+                            <li>GA4, Power BI, Tableau</li>
+                            <li>A/B testing and experimentation</li>
+                            <li>Metrics definition and dashboards</li>
+                            <li>Unit economics</li>
+                        </ul>
+                    </div>
+                    <div class="skillset__group">
+                        <h3>Technical and AI</h3>
+                        <ul>
+                            <li>React, TypeScript, Tailwind</li>
+                            <li>FastAPI and REST API design</li>
+                            <li>Supabase / Postgres</li>
+                            <li>LLM integration and prompt design</li>
+                            <li>AI-assisted development workflows</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
 
-            <div class="marquee" aria-label="Tools I use">
+            <p class="marquee__label mono">Tools I use every week</p>
+            <div class="marquee">
                 <div class="marquee__track" id="marquee-track">
                     <div class="marquee__group">
                         <span class="marquee__item">Jira</span><span class="marquee__item">Figma</span><span class="marquee__item">SQL</span>
@@ -504,41 +472,28 @@
             </div>
         </section>
 
-        <!-- ===================== ACHIEVEMENTS (sticky stack) ===================== -->
+        <!-- ===================== ACHIEVEMENTS ===================== -->
         <section id="achievements" class="section">
             <div class="wrap">
-                <div class="head head--split">
+                <div class="head">
                     <h2 class="h2" data-reveal>Achievements</h2>
                     <p class="lede">A few things I'm proud of.</p>
                 </div>
-
-                <div class="stack" id="stack">
-                    <article class="stack__card">
-                        <span class="stack__shade" aria-hidden="true"></span>
-                        <div class="stack__head">
-                            <span class="stack__kind mono">Recognition</span>
-                            <svg class="icon stack__icon" aria-hidden="true"><use href="#i-trophy"/></svg>
-                        </div>
-                        <h3 class="stack__title">Employee of the Month</h3>
-                        <p class="stack__text">Awarded for driving results while keeping the team's morale up. Of everything on this page, this one means the most to me.</p>
+                <div class="wins">
+                    <article class="win">
+                        <span class="win__kind mono">Recognition</span>
+                        <h3 class="win__title">Employee of the Month</h3>
+                        <p class="win__text">Awarded for driving results while keeping the team's morale up. Of everything on this page, this one means the most to me.</p>
                     </article>
-                    <article class="stack__card">
-                        <span class="stack__shade" aria-hidden="true"></span>
-                        <div class="stack__head">
-                            <span class="stack__kind mono">Builder</span>
-                            <svg class="icon stack__icon" aria-hidden="true"><use href="#i-hammer"/></svg>
-                        </div>
-                        <h3 class="stack__title">Three products shipped solo</h3>
-                        <p class="stack__text">Pantheon, Resume Intelligence, and DineFlow. All built end to end outside working hours, from idea to live product.</p>
+                    <article class="win">
+                        <span class="win__kind mono">Builder</span>
+                        <h3 class="win__title">Three products shipped solo</h3>
+                        <p class="win__text">Pantheon, Resume Intelligence, and DineFlow. All built end to end outside working hours, from idea to live product.</p>
                     </article>
-                    <article class="stack__card">
-                        <span class="stack__shade" aria-hidden="true"></span>
-                        <div class="stack__head">
-                            <span class="stack__kind mono">Delivery</span>
-                            <svg class="icon stack__icon" aria-hidden="true"><use href="#i-target"/></svg>
-                        </div>
-                        <h3 class="stack__title">95% on&#8209;time delivery</h3>
-                        <p class="stack__text">My track record across roadmaps at HeyCoach and Pazo. Mostly down to honest scoping and saying no early.</p>
+                    <article class="win">
+                        <span class="win__kind mono">Delivery</span>
+                        <h3 class="win__title">95% on&#8209;time delivery</h3>
+                        <p class="win__text">My track record across roadmaps at HeyCoach and Pazo. Mostly down to honest scoping and saying no early.</p>
                     </article>
                 </div>
             </div>
@@ -547,21 +502,19 @@
         <!-- ===================== WRITING ===================== -->
         <section id="writing" class="section">
             <div class="wrap">
-                <div class="head">
+                <div class="head head--center">
                     <h2 class="h2" data-reveal>How I think about product</h2>
                 </div>
                 <div class="essays">
                     <article class="essay">
-                        <span class="essay__rule" aria-hidden="true"></span>
                         <span class="essay__kind mono">Strategy</span>
-                        <h3 class="essay__title" data-reveal>Short-term wins are a tax on long-term products</h3>
+                        <h3 class="essay__title">Short-term wins are a tax on long-term products</h3>
                         <p class="essay__text">Every quick feature you ship to close one deal is a loan against your roadmap. You pay it back in maintenance, support tickets, and a muddier product story.</p>
                         <p class="essay__text">The best calls I've made as a PM were the requests I said no to, with data and an alternative in hand.</p>
                     </article>
                     <article class="essay">
-                        <span class="essay__rule" aria-hidden="true"></span>
                         <span class="essay__kind mono">AI and Product</span>
-                        <h3 class="essay__title" data-reveal>AI turned PMs back into builders</h3>
+                        <h3 class="essay__title">AI turned PMs back into builders</h3>
                         <p class="essay__text">With AI tooling, a PM can prototype the real product instead of a Figma of it. That's how I shipped three products on my own.</p>
                         <p class="essay__text">It changed how I scope MVPs, write requirements, and talk to engineers.</p>
                     </article>
@@ -573,67 +526,57 @@
         <section id="contact" class="section">
             <div class="wrap">
                 <h2 class="display contact__title" id="contact-title">Let's build something great together.</h2>
+                <p class="lede center contact__lede" style="text-align: center">Hiring for a product role, want a second opinion on strategy, or just want to talk SaaS and AI? My inbox is open.</p>
 
-                <div class="contact__grid">
-                    <div>
-                        <p class="lede">Hiring for a product role, want a second opinion on strategy, or just want to talk SaaS and AI? My inbox is open.</p>
-                        <div class="links">
-                            <div class="link-row">
-                                <svg class="icon" aria-hidden="true"><use href="#i-envelope-simple"/></svg>
-                                <a class="link-row__text" href="mailto:singh.03shashank@gmail.com">singh.03shashank@gmail.com</a>
-                                <button class="copy-btn" id="copy-email" data-copy="singh.03shashank@gmail.com">Copy</button>
-                            </div>
-                            <a class="link-row" href="https://www.linkedin.com/in/shashank-singh-b592ba162/" target="_blank" rel="noopener">
-                                <svg class="icon" aria-hidden="true"><use href="#i-linkedin-logo"/></svg>
-                                <span class="link-row__text">linkedin.com/in/shashank-singh-b592ba162</span>
-                                <svg class="icon link-row__go" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
-                            </a>
-                            <a class="link-row" href="https://github.com/Shashank3129" target="_blank" rel="noopener">
-                                <svg class="icon" aria-hidden="true"><use href="#i-github-logo"/></svg>
-                                <span class="link-row__text">github.com/Shashank3129</span>
-                                <svg class="icon link-row__go" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
-                            </a>
-                            <div class="link-row">
-                                <svg class="icon" aria-hidden="true"><use href="#i-map-pin"/></svg>
-                                <span class="link-row__text">Bengaluru, India</span>
-                            </div>
-                        </div>
-                        <a class="btn btn--ghost contact__resume magnetic resume-link" href="https://drive.google.com/file/d/1mXUNZkbzMPZu5fDIAiXEY95HeJ7bUFOY/view?usp=sharing" target="_blank" rel="noopener">
-                            <svg class="icon"><use href="#i-file-arrow-down"/></svg>
-                            Download resume
-                        </a>
+                <div class="contact__actions">
+                    <div class="email-pill">
+                        <a href="mailto:singh.03shashank@gmail.com" id="email-text">singh.03shashank@gmail.com</a>
+                        <button class="copy-btn" id="copy-email" data-copy="singh.03shashank@gmail.com">Copy</button>
                     </div>
+                    <a class="btn btn--dark magnetic resume-link" href="https://drive.google.com/file/d/1mXUNZkbzMPZu5fDIAiXEY95HeJ7bUFOY/view?usp=sharing" target="_blank" rel="noopener">
+                        <svg class="icon"><use href="#i-file-arrow-down"/></svg>
+                        Download resume
+                    </a>
+                </div>
 
-                    <form class="form" id="contact-form" novalidate>
-                        <div class="form__row">
-                            <div class="field">
-                                <label for="senderName">Name</label>
-                                <input id="senderName" name="name" type="text" autocomplete="name" required>
-                                <span class="field__error" aria-live="polite"></span>
-                            </div>
-                            <div class="field">
-                                <label for="senderEmail">Email</label>
-                                <input id="senderEmail" name="email" type="email" autocomplete="email" required>
-                                <span class="field__error" aria-live="polite"></span>
-                            </div>
-                        </div>
+                <div class="links">
+                    <a href="https://www.linkedin.com/in/shashank-singh-b592ba162/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-linkedin-logo"/></svg>LinkedIn</a>
+                    <a href="https://github.com/Shashank3129" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github-logo"/></svg>GitHub</a>
+                    <span><svg class="icon" aria-hidden="true"><use href="#i-map-pin"/></svg>Bengaluru, India</span>
+                </div>
+
+                <form class="form" id="contact-form" novalidate>
+                    <h3 class="form__title">Send a message</h3>
+                    <div class="form__row">
                         <div class="field">
-                            <label for="emailSubject">Subject</label>
-                            <input id="emailSubject" name="subject" type="text" required>
+                            <label for="senderName">Name</label>
+                            <input id="senderName" name="name" type="text" autocomplete="name" required>
                             <span class="field__error" aria-live="polite"></span>
                         </div>
                         <div class="field">
-                            <label for="emailMessage">Message</label>
-                            <textarea id="emailMessage" name="message" rows="5" required></textarea>
+                            <label for="senderEmail">Email</label>
+                            <input id="senderEmail" name="email" type="email" autocomplete="email" required>
                             <span class="field__error" aria-live="polite"></span>
                         </div>
-                        <button type="submit" class="btn btn--primary magnetic">
+                    </div>
+                    <div class="field">
+                        <label for="emailSubject">Subject</label>
+                        <input id="emailSubject" name="subject" type="text" required>
+                        <span class="field__error" aria-live="polite"></span>
+                    </div>
+                    <div class="field">
+                        <label for="emailMessage">Message</label>
+                        <textarea id="emailMessage" name="message" rows="5" required></textarea>
+                        <span class="field__error" aria-live="polite"></span>
+                    </div>
+                    <div class="form__foot">
+                        <p class="form__note">This opens your email client with the message filled in.</p>
+                        <button type="submit" class="btn btn--primary">
                             Send message
                             <svg class="icon icon-arrow-ur"><use href="#i-paper-plane-tilt"/></svg>
                         </button>
-                        <p class="form__note">This opens your email client with the message filled in.</p>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </section>
     </main>

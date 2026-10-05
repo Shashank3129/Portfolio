@@ -10,7 +10,6 @@
     // Shared with the WebGL hero (js/hero3d.js)
     const state = (window.portfolio = window.portfolio || { heroProgress: 0, velocity: 0, introAt: 0 });
 
-    if (!animate) root.classList.remove('is-loading');
     if (hasGSAP) gsap.registerPlugin(ScrollTrigger);
 
     /* ---------- Text splitting ---------- */
@@ -54,7 +53,7 @@
     /* ---------- Smooth scroll ---------- */
     let lenis = null;
     if (animate && window.Lenis) {
-        lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+        lenis = new Lenis({ lerp: 0.09, smoothWheel: true });
         lenis.on('scroll', ScrollTrigger.update);
         gsap.ticker.add((time) => lenis.raf(time * 1000));
         gsap.ticker.lagSmoothing(0);
@@ -62,7 +61,7 @@
 
     function scrollToTarget(target) {
         if (lenis) {
-            lenis.scrollTo(target, { offset: target === 0 ? 0 : -8, duration: 1.4 });
+            lenis.scrollTo(target, { duration: 1.4 });
         } else if (target === 0) {
             window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
         } else {
@@ -97,12 +96,12 @@
         root.setAttribute('data-theme', theme);
         try { localStorage.setItem('theme', theme); } catch (e) { /* storage blocked */ }
         const meta = $('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', theme === 'light' ? '#eef0eb' : '#0b100e');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0a0b0f' : '#f5f6f8');
         document.dispatchEvent(new CustomEvent('themechange', { detail: theme }));
     }
 
     $('#theme-toggle').addEventListener('click', (e) => {
-        const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         if (!document.startViewTransition || reduce) {
             applyTheme(next);
             return;
@@ -115,7 +114,7 @@
         transition.ready.then(() => {
             root.animate(
                 { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] },
-                { duration: 750, easing: 'cubic-bezier(0.77, 0, 0.175, 1)', pseudoElement: '::view-transition-new(root)' }
+                { duration: 700, easing: 'cubic-bezier(0.77, 0, 0.175, 1)', pseudoElement: '::view-transition-new(root)' }
             );
         }).catch(() => {});
     });
@@ -129,9 +128,9 @@
         if (lenis) lenis.stop();
         if (animate) {
             gsap.fromTo($$('.menu__link', menu),
-                { yPercent: 60, opacity: 0 },
-                { yPercent: 0, opacity: 1, duration: 0.7, stagger: 0.05, delay: 0.18, ease: 'expo.out' });
-            gsap.fromTo('.menu__foot', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, delay: 0.45, ease: 'expo.out' });
+                { y: 24, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.6, stagger: 0.04, delay: 0.08, ease: 'expo.out' });
+            gsap.fromTo('.menu__foot', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, delay: 0.3, ease: 'expo.out' });
         }
         setTimeout(() => $('#mobile-menu-close').focus(), 50);
     }
@@ -159,11 +158,11 @@
         };
         const fallback = () => {
             const range = document.createRange();
-            range.selectNodeContents(copyBtn.previousElementSibling);
+            range.selectNodeContents($('#email-text'));
             const sel = window.getSelection();
             sel.removeAllRanges();
             sel.addRange(range);
-            showNotification('Selected. Press copy to save it.');
+            showNotification('Address selected, ready to copy');
         };
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(text).then(done, fallback);
@@ -197,7 +196,6 @@
         const results = inputs.map(validateField);
         if (results.includes(false)) {
             inputs[results.indexOf(false)].focus();
-            if (animate) gsap.fromTo(form, { x: -8 }, { x: 0, duration: 0.5, ease: 'elastic.out(1, 0.3)' });
             return;
         }
         const name = $('#senderName').value.trim();
@@ -210,32 +208,8 @@
         form.reset();
     });
 
-    /* ---------- Skill tabs ---------- */
-    const tabs = $$('.tab');
-    function selectTab(tab) {
-        tabs.forEach((t) => {
-            const on = t === tab;
-            t.setAttribute('aria-selected', String(on));
-            t.tabIndex = on ? 0 : -1;
-            $('#' + t.getAttribute('aria-controls')).hidden = !on;
-        });
-        const panel = $('#' + tab.getAttribute('aria-controls'));
-        if (animate) {
-            gsap.fromTo($$('li', panel), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.55, stagger: 0.05, ease: 'expo.out' });
-        }
-    }
-    tabs.forEach((tab, i) => {
-        tab.addEventListener('click', () => selectTab(tab));
-        tab.addEventListener('keydown', (e) => {
-            if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-            const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
-            next.focus();
-            selectTab(next);
-        });
-    });
-
     /* ---------- Generated visuals ---------- */
-    // Pantheon council ring
+    // Pantheon council ring: the ring spins, each seat counter-rotates to keep facing the viewer
     const spin = $('#council-spin');
     const seats = ['St', 'Ec', 'Bu', 'De', 'Sk', 'Op', 'Hi', 'Ph', 'Ma', 'Le', 'Da', 'Ps'];
     seats.forEach((label, i) => {
@@ -247,9 +221,8 @@
         spin.appendChild(seat);
     });
     const council = $('#council');
-    // The ring spins; each seat counter-rotates so its label keeps facing the viewer
     if (!reduce) {
-        const spinTiming = { duration: 26000, iterations: Infinity };
+        const spinTiming = { duration: 32000, iterations: Infinity };
         spin.animate([{ transform: 'rotateZ(0deg)' }, { transform: 'rotateZ(360deg)' }], spinTiming);
         $$('.council__seat span', spin).forEach((s) => {
             s.animate(
@@ -279,80 +252,6 @@
         }
     }
 
-    // Skills sphere
-    const sphere = $('#sphere');
-    const tagWords = [
-        ['Discovery', 0], ['Roadmaps', 0], ['PRDs', 0], ['Prioritization', 0], ['Agile', 0], ['Stakeholders', 0],
-        ['SQL', 0], ['Funnels', 0], ['A/B tests', 0], ['Unit economics', 0], ['React', 0], ['TypeScript', 0],
-        ['FastAPI', 0], ['LLMs', 0], ['Prompt design', 0], ['Jira', 1], ['Figma', 1], ['GA4', 1], ['Power BI', 1],
-        ['Tableau', 1], ['Postman', 1], ['Notion', 1], ['Mixpanel', 1], ['Claude', 1], ['Supabase', 1], ['Obsidian', 1],
-    ];
-    const points = tagWords.map(([word, tool], i) => {
-        const el = document.createElement('span');
-        el.className = 'sphere__tag' + (tool ? ' is-tool' : '');
-        el.textContent = word;
-        sphere.appendChild(el);
-        // Fibonacci sphere distribution
-        const y = 1 - (i / (tagWords.length - 1)) * 2;
-        const rad = Math.sqrt(1 - y * y);
-        const theta = Math.PI * (3 - Math.sqrt(5)) * i;
-        return { el, x: Math.cos(theta) * rad, y, z: Math.sin(theta) * rad, w: 0, h: 0 };
-    });
-    let rotX = 0.35, rotY = 0, velX = 0.0012, velY = 0.0042, dragging = false, lastPX = 0, lastPY = 0;
-    function measureSphere() { points.forEach((p) => { p.w = p.el.offsetWidth; p.h = p.el.offsetHeight; }); }
-    function renderSphere() {
-        const R = sphere.clientWidth * 0.36;
-        const cx = Math.cos(rotX), sx = Math.sin(rotX), cy = Math.cos(rotY), sy = Math.sin(rotY);
-        points.forEach((p) => {
-            const x1 = p.x * cy + p.z * sy;
-            const z1 = -p.x * sy + p.z * cy;
-            const y2 = p.y * cx - z1 * sx;
-            const z2 = p.y * sx + z1 * cx;
-            const scale = 0.62 + (z2 + 1) * 0.26;
-            p.el.style.transform = `translate(${x1 * R - p.w / 2}px, ${y2 * R - p.h / 2}px) scale(${scale.toFixed(3)})`;
-            p.el.style.opacity = (0.22 + (z2 + 1) * 0.39).toFixed(3);
-            p.el.style.zIndex = String(Math.round((z2 + 1) * 100));
-        });
-    }
-    measureSphere();
-    renderSphere();
-    let sphereVisible = false;
-    if (!reduce) {
-        new IntersectionObserver(([entry]) => { sphereVisible = entry.isIntersecting; }).observe(sphere);
-        const tick = () => {
-            if (sphereVisible) {
-                if (!dragging) {
-                    velY += (0.0042 - velY) * 0.02;
-                    velX += (0.0012 - velX) * 0.02;
-                }
-                rotY += velY;
-                rotX += velX * Math.cos(rotY * 0.5);
-                renderSphere();
-            }
-            requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-    }
-    sphere.addEventListener('pointerdown', (e) => {
-        dragging = true;
-        lastPX = e.clientX;
-        lastPY = e.clientY;
-        sphere.setPointerCapture(e.pointerId);
-    });
-    sphere.addEventListener('pointermove', (e) => {
-        if (!dragging) return;
-        velY = (e.clientX - lastPX) * 0.004;
-        velX = (e.clientY - lastPY) * -0.004;
-        lastPX = e.clientX;
-        lastPY = e.clientY;
-        if (reduce) { rotY += velY; rotX += velX; renderSphere(); }
-    });
-    const endDrag = () => { dragging = false; };
-    sphere.addEventListener('pointerup', endDrag);
-    sphere.addEventListener('pointercancel', endDrag);
-    window.addEventListener('resize', () => { measureSphere(); renderSphere(); });
-    document.fonts && document.fonts.ready.then(() => { measureSphere(); renderSphere(); });
-
     // Marquee: clone the group so the loop is seamless
     const marqueeTrack = $('#marquee-track');
     const group = $('.marquee__group', marqueeTrack);
@@ -366,40 +265,31 @@
         $$('.magnetic').forEach((el) => {
             let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
             const step = () => {
-                cx += (tx - cx) * 0.16;
-                cy += (ty - cy) * 0.16;
+                cx += (tx - cx) * 0.14;
+                cy += (ty - cy) * 0.14;
                 el.style.translate = `${cx.toFixed(2)}px ${cy.toFixed(2)}px`;
                 raf = Math.abs(tx - cx) + Math.abs(ty - cy) > 0.1 ? requestAnimationFrame(step) : 0;
             };
             const kick = () => { if (!raf) raf = requestAnimationFrame(step); };
             el.addEventListener('pointermove', (e) => {
                 const r = el.getBoundingClientRect();
-                tx = (e.clientX - (r.left + r.width / 2)) * 0.28;
-                ty = (e.clientY - (r.top + r.height / 2)) * 0.35;
+                tx = (e.clientX - (r.left + r.width / 2)) * 0.2;
+                ty = (e.clientY - (r.top + r.height / 2)) * 0.3;
                 kick();
             });
             el.addEventListener('pointerleave', () => { tx = 0; ty = 0; kick(); });
         });
 
         $$('.tilt').forEach((el) => {
-            gsap.set(el, { transformPerspective: 900 });
-            const rx = gsap.quickTo(el, 'rotationX', { duration: 0.7, ease: 'power3.out' });
-            const ry = gsap.quickTo(el, 'rotationY', { duration: 0.7, ease: 'power3.out' });
+            gsap.set(el, { transformPerspective: 1000 });
+            const rx = gsap.quickTo(el, 'rotationX', { duration: 0.8, ease: 'power3.out' });
+            const ry = gsap.quickTo(el, 'rotationY', { duration: 0.8, ease: 'power3.out' });
             el.addEventListener('pointermove', (e) => {
                 const r = el.getBoundingClientRect();
-                rx(((e.clientY - r.top) / r.height - 0.5) * -10);
-                ry(((e.clientX - r.left) / r.width - 0.5) * 12);
+                rx(((e.clientY - r.top) / r.height - 0.5) * -7);
+                ry(((e.clientX - r.left) / r.width - 0.5) * 9);
             });
             el.addEventListener('pointerleave', () => { rx(0); ry(0); });
-        });
-    }
-    if (finePointer) {
-        $$('.spot').forEach((el) => {
-            el.addEventListener('pointermove', (e) => {
-                const r = el.getBoundingClientRect();
-                el.style.setProperty('--mx', `${e.clientX - r.left}px`);
-                el.style.setProperty('--my', `${e.clientY - r.top}px`);
-            });
         });
     }
 
@@ -416,24 +306,25 @@
         const scoreNum = $('#score-num');
         scoreBar.setAttribute('stroke-dashoffset', '100');
         scoreNum.textContent = '0';
+        gsap.set('.score__tag', { opacity: 0, y: 10 });
         onVisible($('#score'), () => {
             gsap.to(scoreBar, { attr: { 'stroke-dashoffset': 14 }, duration: 1.8, ease: 'expo.out' });
             const o = { v: 0 };
             gsap.to(o, { v: 86, duration: 1.8, ease: 'expo.out', onUpdate: () => { scoreNum.textContent = Math.round(o.v); } });
-            gsap.from('.score__tag', { opacity: 0, y: 14, scale: 0.95, duration: 0.6, stagger: 0.12, delay: 0.5, ease: 'expo.out' });
+            gsap.to('.score__tag', { opacity: 1, y: 0, duration: 0.7, stagger: 0.12, delay: 0.5, ease: 'expo.out' });
         });
 
-        gsap.set('#qr i', { scale: 0.4, opacity: 0 });
-        gsap.set('.order', { yPercent: 120, opacity: 0 });
+        gsap.set('#qr i', { scale: 0.5, opacity: 0 });
+        gsap.set('.order', { yPercent: 80, opacity: 0 });
         onVisible(qr, () => {
-            gsap.to('#qr i', { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(2)', stagger: { grid: [N, N], from: 'center', amount: 0.9 } });
-            gsap.to('.order', { yPercent: 0, opacity: 1, duration: 0.8, delay: 0.9, ease: 'expo.out' });
+            gsap.to('#qr i', { scale: 1, opacity: 1, duration: 0.6, ease: 'expo.out', stagger: { grid: [N, N], from: 'center', amount: 0.8 } });
+            gsap.to('.order', { yPercent: 0, opacity: 1, duration: 0.8, delay: 0.8, ease: 'expo.out' });
         });
 
         gsap.set('.council__seat span', { opacity: 0 });
         onVisible(council, () => {
-            gsap.to('.council__seat span', { opacity: 1, duration: 0.6, stagger: 0.06, ease: 'power2.out' });
-            gsap.from('.council__core', { scale: 0.85, opacity: 0, duration: 1, ease: 'expo.out' });
+            gsap.to('.council__seat span', { opacity: 1, duration: 0.6, stagger: 0.05, ease: 'power2.out' });
+            gsap.from('.council__core', { scale: 0.9, opacity: 0, duration: 1, ease: 'expo.out' });
         });
     }
 
@@ -443,78 +334,62 @@
        GSAP choreography (skipped for reduced motion or missing libs)
        ================================================================= */
 
-    // Hero split
-    const heroChars = [];
+    // Hero entrance: words rise softly, then the supporting copy
+    const heroWords = [];
     $$('#hero-title [data-split]').forEach((el) => {
-        splitWords(el, true);
-        heroChars.push(...$$('.ch', el));
+        splitWords(el);
+        heroWords.push(...$$('.wi', el));
     });
     const rotatorWords = $$('.rotator__word');
-    gsap.set(heroChars, { yPercent: 115, rotateX: -80, opacity: 0, transformOrigin: '50% 100%' });
-    gsap.set(rotatorWords[0], { yPercent: 115, opacity: 0 });
-    gsap.set('.hero-fade', { y: 24, opacity: 0 });
-    gsap.set('#navbar', { yPercent: -100, opacity: 0 });
+    gsap.set(heroWords, { yPercent: 110 });
+    gsap.set(rotatorWords[0], { yPercent: 110 });
+    gsap.set('.hero-fade', { y: 18, opacity: 0 });
+    gsap.set('#navbar', { y: -16, opacity: 0 });
 
-    function heroIntro() {
-        state.introAt = performance.now();
-        document.dispatchEvent(new CustomEvent('hero:intro'));
-        const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
-        tl.to(heroChars, { yPercent: 0, rotateX: 0, opacity: 1, duration: 1.1, stagger: 0.028 }, 0.1)
-            .to(rotatorWords[0], { yPercent: 0, opacity: 1, duration: 1.1 }, 0.55)
-            .to('.hero-fade', { y: 0, opacity: 1, duration: 0.9, stagger: 0.08 }, 0.7)
-            .to('#navbar', { yPercent: 0, opacity: 1, duration: 0.9, clearProps: 'transform,opacity' }, 0.5)
-            .add(startRotator, 1.6);
-    }
+    state.introAt = performance.now();
+    document.dispatchEvent(new CustomEvent('hero:intro'));
+    gsap.timeline({ defaults: { ease: 'expo.out' }, delay: 0.15 })
+        .to('#navbar', { y: 0, opacity: 1, duration: 1, clearProps: 'transform,opacity' }, 0)
+        .to('.hero__intro', { y: 0, opacity: 1, duration: 1 }, 0.1)
+        .to(heroWords, { yPercent: 0, duration: 1.2, stagger: 0.07 }, 0.2)
+        .to(rotatorWords[0], { yPercent: 0, duration: 1.2 }, 0.48)
+        .to('.hero__sub, .hero__ctas', { y: 0, opacity: 1, duration: 1, stagger: 0.1 }, 0.6)
+        .add(startRotator, 2);
+
+    // The slot eases to each word's width so the centred line stays balanced
+    const rotator = $('#word-rotator');
+    const fitRotator = (word) => { rotator.style.width = `${word.offsetWidth}px`; };
+    fitRotator(rotatorWords[0]);
+    if (document.fonts) document.fonts.ready.then(() => fitRotator(rotatorWords[0]));
 
     function startRotator() {
         let i = 0;
-        gsap.set(rotatorWords.slice(1), { rotateX: -90, opacity: 0 });
         setInterval(() => {
             if (document.hidden) return;
             const prev = rotatorWords[i];
             i = (i + 1) % rotatorWords.length;
             const next = rotatorWords[i];
-            gsap.to(prev, { rotateX: 90, opacity: 0, duration: 0.7, ease: 'power3.inOut' });
-            gsap.fromTo(next, { rotateX: -90, opacity: 0 }, { rotateX: 0, opacity: 1, duration: 0.7, ease: 'power3.inOut' });
-        }, 2400);
+            fitRotator(next);
+            gsap.to(prev, { yPercent: -40, opacity: 0, filter: 'blur(6px)', duration: 0.6, ease: 'power2.in' });
+            gsap.fromTo(next,
+                { yPercent: 40, opacity: 0, filter: 'blur(6px)' },
+                { yPercent: 0, opacity: 1, filter: 'blur(0px)', duration: 0.8, delay: 0.25, ease: 'expo.out' });
+        }, 2800);
     }
 
-    // Preloader
-    const preloader = $('#preloader');
-    if (root.classList.contains('is-loading')) {
-        if (lenis) lenis.stop();
-        const count = { v: 0 };
-        const countEl = $('#preloader-count');
-        gsap.timeline({
-            onComplete: () => {
-                root.classList.remove('is-loading');
-                try { sessionStorage.setItem('intro-seen', '1'); } catch (e) { /* storage blocked */ }
-                if (lenis) lenis.start();
-                ScrollTrigger.refresh();
-            },
-        })
-            .from('.preloader__name span', { yPercent: 100, opacity: 0, duration: 0.6, stagger: 0.08, ease: 'expo.out' }, 0)
-            .to(count, { v: 100, duration: 1.3, ease: 'power2.inOut', onUpdate: () => { countEl.textContent = Math.round(count.v); } }, 0)
-            .to('.preloader__bar', { scaleX: 1, duration: 1.3, ease: 'power2.inOut' }, 0)
-            .to(preloader, { clipPath: 'inset(0 0 100% 0)', duration: 0.9, ease: 'expo.inOut' }, 1.4)
-            .add(heroIntro, 1.75);
-    } else {
-        heroIntro();
-    }
-
-    // Hero scroll-out, and progress shared with the 3D scene
-    gsap.to('#hero-inner', {
-        yPercent: -18,
-        opacity: 0,
-        ease: 'none',
+    // Hero scroll: copy lifts away, the pearl rises (3D), the caption arrives
+    gsap.timeline({
         scrollTrigger: {
             trigger: '.hero',
             start: 'top top',
-            end: 'bottom top',
-            scrub: true,
+            end: 'bottom bottom',
+            scrub: 0.6,
             onUpdate: (self) => { state.heroProgress = self.progress; },
         },
-    });
+    })
+        .to('#hero-copy', { y: -80, opacity: 0, ease: 'power1.in', duration: 0.45 }, 0)
+        .fromTo('#hero-caption', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.55)
+        .to({}, { duration: 0.15 });
 
     // Page-wide: progress bar, nav state, scroll velocity
     const navbar = $('#navbar');
@@ -525,9 +400,9 @@
         onUpdate: (self) => {
             const y = self.scroll();
             state.velocity = self.getVelocity();
-            navbar.classList.toggle('is-scrolled', y > 40);
+            navbar.classList.toggle('is-scrolled', y > 24);
             const menuOpen = menu.classList.contains('is-open');
-            navbar.classList.toggle('is-hidden', !menuOpen && y > innerHeight * 0.6 && self.direction === 1);
+            navbar.classList.toggle('is-hidden', !menuOpen && y > innerHeight * 2.2 && self.direction === 1);
         },
     });
 
@@ -554,14 +429,13 @@
             onToggle: (self) => { if (self.isActive) setActive(id); },
         });
     });
-    ScrollTrigger.create({ trigger: '.hero', start: 'top top', end: 'bottom 55%', onEnterBack: () => setActive(null) });
+    ScrollTrigger.create({ trigger: '#products', start: 'top 55%', onLeaveBack: () => setActive(null) });
 
     // Masked word reveals for headings
     $$('[data-reveal]').forEach((el) => {
         splitWords(el);
         gsap.from($$('.wi', el), {
             yPercent: 110,
-            rotate: 4,
             duration: 1.1,
             stagger: 0.06,
             ease: 'expo.out',
@@ -569,15 +443,34 @@
         });
     });
 
-    // Generic rise for ledes and small blocks
-    $$('.lede, .tabs, .essay__text, .form, .links, .contact__resume').forEach((el) => {
-        gsap.from(el, { y: 32, opacity: 0, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 90%', once: true } });
+    // Soft rise for supporting blocks
+    function rise(targets, vars = {}) {
+        $$(targets).forEach((el) => {
+            gsap.from(el, {
+                y: 36, opacity: 0, duration: 1.1, ease: 'expo.out',
+                scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+                ...vars,
+            });
+        });
+    }
+    rise('.head .lede, .contact__lede, .contact__actions, .links, .form, .marquee__label');
+    rise('.tile', { y: 70, scale: 0.97, duration: 1.3 });
+    rise('.essay', { y: 60, duration: 1.2 });
+    rise('.win', { y: 40 });
+
+    // Skills: groups rise, list items follow
+    $$('.skillset__group').forEach((g, i) => {
+        gsap.from([$('h3', g), ...$$('li', g)], {
+            y: 24, opacity: 0, duration: 0.9, stagger: 0.05, delay: i * 0.08, ease: 'expo.out',
+            scrollTrigger: { trigger: g, start: 'top 85%', once: true },
+        });
     });
 
-    // Story: words light up as you scroll, then the ledger counts up
+    // Statement: words light up as you scroll, then the ledger counts up
     const storyText = $('#story-text');
     const keyWords = new Set(['build', 'thing', 'myself.']);
-    const storyWords = splitWords(storyText) && $$('.wi', storyText);
+    splitWords(storyText);
+    const storyWords = $$('.wi', storyText);
     storyWords.forEach((w) => {
         w.classList.add('story__word');
         if (keyWords.has(w.textContent)) w.classList.add('is-key');
@@ -593,65 +486,22 @@
             gsap.to(o, { v: +c.dataset.target, duration: 1.6, ease: 'expo.out', onUpdate: () => { c.textContent = Math.round(o.v); } });
         });
     }
-    gsap.set('.ledger__item', { y: 40, opacity: 0 });
+    gsap.set('.ledger__item', { y: 30, opacity: 0 });
     gsap.timeline({ scrollTrigger: { trigger: '#story', start: 'top top', end: 'bottom bottom', scrub: 0.5 } })
         .to(storyWords, { opacity: 1, stagger: 0.12, ease: 'none', duration: 0.3 })
-        .to('.ledger__item', { y: 0, opacity: 1, stagger: 0.15, duration: 0.6, ease: 'power2.out' }, '-=0.2')
+        .to('.ledger__item', { y: 0, opacity: 1, stagger: 0.12, duration: 0.5, ease: 'power2.out' }, '-=0.2')
         .call(runCounters)
         .to({}, { duration: 0.6 });
 
-    // Showcase: the Pantheon window unfolds in 3D
+    // Showcase: the Pantheon window tilts up into place
     $$('.callout').forEach((c, i) => gsap.set(c, { z: [90, 140, 60][i], y: 30, opacity: 0 }));
     gsap.timeline({ scrollTrigger: { trigger: '#showcase', start: 'top top', end: 'bottom bottom', scrub: 0.8 } })
         .fromTo('#zoom-stage',
-            { rotateX: 62, rotateZ: -6, scale: 0.6, yPercent: 30 },
-            { rotateX: 0, rotateZ: 0, scale: 1, yPercent: 6, duration: 3, ease: 'power2.inOut' })
-        .to('#showcase-intro', { opacity: 0, y: -50, duration: 0.8 }, 1.3)
+            { rotateX: 48, scale: 0.7, yPercent: 26 },
+            { rotateX: 0, scale: 1, yPercent: 6, duration: 3, ease: 'power2.inOut' })
+        .to('#showcase-intro', { opacity: 0, y: -40, duration: 0.8 }, 1.4)
         .to('.callout', { opacity: 1, y: 0, duration: 0.6, stagger: 0.35, ease: 'power3.out' }, 2.3)
         .to({}, { duration: 0.5 });
-
-    // Products: horizontal pan on desktop, rising cards elsewhere
-    const mm = gsap.matchMedia();
-    const productsSection = $('#products');
-    const track = $('#products-track');
-    const products = $$('.product', track);
-    mm.add('(min-width: 1024px)', () => {
-        productsSection.classList.add('is-pan');
-        const distance = () => track.scrollWidth - innerWidth;
-        const pan = gsap.to(track, {
-            x: () => -distance(),
-            ease: 'none',
-            scrollTrigger: {
-                trigger: '.products__pin',
-                pin: true,
-                start: 'top top',
-                end: () => '+=' + distance(),
-                scrub: 1,
-                invalidateOnRefresh: true,
-                onUpdate: (self) => gsap.set('#products-meter', { scaleX: self.progress }),
-            },
-        });
-        products.forEach((p, i) => {
-            if (i === 0) return;
-            gsap.fromTo(p, { rotateY: -18, scale: 0.88, opacity: 0.4, transformPerspective: 1600, transformOrigin: '0% 50%' }, {
-                rotateY: 0, scale: 1, opacity: 1, ease: 'none',
-                scrollTrigger: { trigger: p, containerAnimation: pan, start: 'left right', end: 'left 35%', scrub: true },
-            });
-        });
-        return () => {
-            productsSection.classList.remove('is-pan');
-            gsap.set(track, { clearProps: 'transform' });
-        };
-    });
-    mm.add('(max-width: 1023px)', () => {
-        products.forEach((p) => {
-            gsap.from(p, {
-                y: 80, rotateX: 10, scale: 0.94, opacity: 0, transformPerspective: 1200, transformOrigin: '50% 0%',
-                duration: 1.2, ease: 'expo.out',
-                scrollTrigger: { trigger: p, start: 'top 88%', once: true },
-            });
-        });
-    });
 
     // Experience: rail fills, the year in the aside follows the active role
     gsap.to('#timeline-fill', {
@@ -666,7 +516,7 @@
     function showRole(role) {
         gsap.to(yearState, { v: +role.dataset.year, duration: 0.8, ease: 'power3.out', onUpdate: () => { yearEl.textContent = Math.round(yearState.v); } });
         if (companyEl.textContent !== role.dataset.company) {
-            gsap.fromTo(companyEl, { yPercent: 60, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.5, ease: 'expo.out' });
+            gsap.fromTo(companyEl, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'expo.out' });
             companyEl.textContent = role.dataset.company;
         }
     }
@@ -686,57 +536,28 @@
         });
     });
 
-    // Skills sphere entrance
-    gsap.from('#sphere', { scale: 0.8, opacity: 0, duration: 1.4, ease: 'expo.out', scrollTrigger: { trigger: '#sphere', start: 'top 85%', once: true } });
-    gsap.from('.panel:not([hidden]) li', {
-        y: 24, opacity: 0, duration: 0.8, stagger: 0.06, ease: 'expo.out',
-        scrollTrigger: { trigger: '.panel', start: 'top 88%', once: true },
-    });
-
-    // Marquee reacts to scroll speed and direction
-    const loop = gsap.to(marqueeTrack, { xPercent: -50, duration: 32, ease: 'none', repeat: -1 });
-    let marqueeDir = 1;
+    // Marquee: steady drift, nudged by scroll speed
+    const loop = gsap.to(marqueeTrack, { xPercent: -50, duration: 40, ease: 'none', repeat: -1 });
     ScrollTrigger.create({
         trigger: '.marquee',
         start: 'top bottom',
         end: 'bottom top',
         onUpdate: (self) => {
-            marqueeDir = self.direction;
-            const boost = Math.min(Math.abs(self.getVelocity()) / 250, 5);
-            gsap.to(loop, { timeScale: marqueeDir * (1 + boost), duration: 0.2, overwrite: true });
-            gsap.to(loop, { timeScale: marqueeDir, duration: 1.2, delay: 0.2, ease: 'power2.out' });
+            const boost = Math.min(Math.abs(self.getVelocity()) / 400, 3);
+            gsap.to(loop, { timeScale: 1 + boost, duration: 0.2, overwrite: true });
+            gsap.to(loop, { timeScale: 1, duration: 1.4, delay: 0.2, ease: 'power2.out' });
         },
     });
 
-    // Achievements: cards stack, earlier ones recede in 3D
-    const cards = $$('.stack__card');
-    cards.forEach((card, i) => {
-        gsap.from($$('.stack__title, .stack__text', card), {
-            y: 50, opacity: 0, duration: 1.1, stagger: 0.08, ease: 'expo.out',
-            scrollTrigger: { trigger: card, start: 'top 80%', once: true },
-        });
-        const next = cards[i + 1];
-        if (!next) return;
-        const recede = { trigger: next, start: 'top bottom', end: 'top 25%', scrub: true };
-        gsap.to(card, { scale: 0.9, rotateX: 8, transformPerspective: 1200, ease: 'none', scrollTrigger: recede });
-        gsap.to($('.stack__shade', card), { opacity: 0.65, ease: 'none', scrollTrigger: { ...recede } });
-    });
-
-    // Writing: rules draw across
-    $$('.essay__rule').forEach((rule) => {
-        gsap.from(rule, { scaleX: 0, duration: 1.4, ease: 'expo.inOut', scrollTrigger: { trigger: rule, start: 'top 90%', once: true } });
-    });
-
-    // Contact headline: characters rise word by word
+    // Contact headline: words rise
     const contactTitle = $('#contact-title');
     contactTitle.setAttribute('aria-label', contactTitle.textContent.trim());
-    splitWords(contactTitle, true);
+    splitWords(contactTitle);
     $$('.wm', contactTitle).forEach((w) => w.setAttribute('aria-hidden', 'true'));
-    gsap.from($$('.ch', contactTitle), {
-        yPercent: 120,
-        rotate: 8,
-        duration: 1,
-        stagger: 0.018,
+    gsap.from($$('.wi', contactTitle), {
+        yPercent: 110,
+        duration: 1.2,
+        stagger: 0.07,
         ease: 'expo.out',
         scrollTrigger: { trigger: contactTitle, start: 'top 85%', once: true },
     });
@@ -752,7 +573,7 @@
     gsap.from(wordChars, {
         yPercent: 100,
         duration: 1.2,
-        stagger: 0.05,
+        stagger: 0.04,
         ease: 'expo.out',
         scrollTrigger: { trigger: '.footer', start: 'top 85%', once: true },
     });
