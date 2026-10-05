@@ -166,15 +166,22 @@ function init() {
     const pearl = new THREE.Mesh(new THREE.IcosahedronGeometry(1, small ? 48 : 80), pearlMat);
     group.add(pearl);
 
-    // Satellites: one in the accent colour, one porcelain
-    const accentMat = new THREE.MeshPhysicalMaterial({ color: 0x3a5bd9, roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: 1.2 });
-    const porcelainMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.3, clearcoat: 0.6, envMapIntensity: 1 });
+    // Coloured lights circle the pearl so its reflections pick up the palette
+    const palette = ['--c1', '--c2', '--c3', '--c4'];
+    const orbitLights = palette.map(() => {
+        const l = new THREE.PointLight(0xffffff, 0, 0, 2);
+        group.add(l);
+        return l;
+    });
+
+    // Satellites in each palette colour, on their own tilted orbits
     const satGeo = new THREE.SphereGeometry(1, 48, 48);
-    const satA = new THREE.Mesh(satGeo, accentMat);
-    const satB = new THREE.Mesh(satGeo, porcelainMat);
-    satA.scale.setScalar(0.16);
-    satB.scale.setScalar(0.1);
-    group.add(satA, satB);
+    const sats = palette.map((_, i) => {
+        const m = new THREE.Mesh(satGeo, new THREE.MeshPhysicalMaterial({ roughness: 0.14, clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: 1.1 }));
+        m.userData = { size: [0.17, 0.11, 0.13, 0.08][i], speed: [0.45, 0.32, 0.38, 0.55][i], phase: i * 1.7, rx: [1.75, 1.5, 1.95, 1.35][i], ry: [0.3, -0.45, 0.6, -0.2][i], rz: [1.2, 1.0, 1.4, 0.9][i] };
+        group.add(m);
+        return m;
+    });
 
     // Soft contact shadow under the pearl
     const shadow = new THREE.Mesh(
@@ -186,7 +193,11 @@ function init() {
     function applyTheme() {
         const dark = document.documentElement.getAttribute('data-theme') === 'dark';
         const accent = cssColor('--accent', '#3a5bd9');
-        accentMat.color.copy(dark ? new THREE.Color('#5d7bf0') : accent);
+        palette.forEach((name, i) => {
+            const c = cssColor(name, '#3a5bd9');
+            sats[i].material.color.copy(c);
+            orbitLights[i].color.copy(c);
+        });
         rim.color.copy(accent);
         rim.intensity = dark ? 3.2 : 2.2;
         pearlMat.color.set(dark ? 0xdfe4f2 : 0xeef1fa);
@@ -248,13 +259,18 @@ function init() {
         pearl.rotation.y = time * 0.12 + pointer.x * 0.35 + t * 1.2;
         pearl.rotation.x = pointer.y * 0.2;
 
-        // Satellites trace tilted orbits around the pearl
-        const a = time * 0.45;
-        satA.position.set(Math.cos(a) * radius * 1.75, Math.sin(a * 0.9) * radius * 0.35 + radius * 0.2, Math.sin(a) * radius * 1.2);
-        satA.scale.setScalar(radius * 0.17);
-        const b = time * 0.32 + 2.4;
-        satB.position.set(Math.cos(b) * radius * 1.45, -radius * 0.45 + Math.sin(b * 1.3) * radius * 0.2, Math.sin(b) * radius * 1.0);
-        satB.scale.setScalar(radius * 0.1);
+        // Satellites trace tilted orbits; coloured lights circle just outside the pearl
+        sats.forEach((m) => {
+            const d = m.userData;
+            const a = time * d.speed + d.phase + t * 2;
+            m.position.set(Math.cos(a) * radius * d.rx, d.ry * radius + Math.sin(a * 1.3) * radius * 0.2, Math.sin(a) * radius * d.rz);
+            m.scale.setScalar(radius * d.size * (0.6 + 0.4 * intro));
+        });
+        orbitLights.forEach((l, i) => {
+            const a = time * 0.35 + i * (Math.PI / 2);
+            l.position.set(Math.cos(a) * radius * 2.2, Math.sin(a * 0.8 + i) * radius * 1.2, Math.sin(a) * radius * 2.2 + radius * 0.8);
+            l.intensity = 9 * radius * radius * intro;
+        });
 
         shadow.position.set(group.position.x, y - radius * 1.08, -radius);
         shadow.scale.set(radius * 2.8, radius * 0.5, 1);

@@ -100,8 +100,11 @@
         document.dispatchEvent(new CustomEvent('themechange', { detail: theme }));
     }
 
+    let themeTransition = null;
     $('#theme-toggle').addEventListener('click', (e) => {
         const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        // A click during a running reveal finishes it at once, then switches again
+        if (themeTransition) themeTransition.skipTransition();
         if (!document.startViewTransition || reduce) {
             applyTheme(next);
             return;
@@ -111,10 +114,12 @@
         const y = e.clientY || rect.top + rect.height / 2;
         const r = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
         const transition = document.startViewTransition(() => applyTheme(next));
+        themeTransition = transition;
+        transition.finished.finally(() => { if (themeTransition === transition) themeTransition = null; });
         transition.ready.then(() => {
             root.animate(
                 { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] },
-                { duration: 700, easing: 'cubic-bezier(0.77, 0, 0.175, 1)', pseudoElement: '::view-transition-new(root)' }
+                { duration: 600, easing: 'cubic-bezier(0.77, 0, 0.175, 1)', pseudoElement: '::view-transition-new(root)' }
             );
         }).catch(() => {});
     });
@@ -293,6 +298,31 @@
         });
     }
 
+    // Colour spotlight follows the pointer across cards
+    if (finePointer) {
+        $$('.glow').forEach((el) => {
+            el.addEventListener('pointermove', (e) => {
+                const r = el.getBoundingClientRect();
+                el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+                el.style.setProperty('--my', `${e.clientY - r.top}px`);
+            });
+        });
+    }
+
+    /* ---------- Page tint follows the section in view ---------- */
+    const wash = $('#bg-wash');
+    const navLinksAll = $$('.nav__link');
+    function setTint(n) {
+        wash.style.setProperty('--wash', n ? `var(--t${n})` : 'var(--t0)');
+        navLinksAll.forEach((l) => l.style.setProperty('--nav-k', n ? `var(--c${n})` : 'var(--fg)'));
+    }
+    const tintSections = $$('[data-tint]');
+    const tintIO = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => { if (entry.isIntersecting) setTint(entry.target.dataset.tint); });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    tintSections.forEach((s) => tintIO.observe(s));
+    setTint(1);
+
     /* ---------- One-off visual animations when they come into view ---------- */
     function onVisible(el, fn, threshold = 0.35) {
         const io = new IntersectionObserver(([entry]) => {
@@ -387,7 +417,7 @@
             onUpdate: (self) => { state.heroProgress = self.progress; },
         },
     })
-        .to('#hero-copy', { y: -80, opacity: 0, ease: 'power1.in', duration: 0.45 }, 0)
+        .to('#hero-copy', { y: -80, autoAlpha: 0, ease: 'power1.in', duration: 0.45 }, 0)
         .fromTo('#hero-caption', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.55)
         .to({}, { duration: 0.15 });
 
@@ -449,6 +479,7 @@
             gsap.from(el, {
                 y: 36, opacity: 0, duration: 1.1, ease: 'expo.out',
                 scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+                clearProps: 'transform,opacity,translate,rotate,scale',
                 ...vars,
             });
         });
@@ -463,17 +494,21 @@
         gsap.from([$('h3', g), ...$$('li', g)], {
             y: 24, opacity: 0, duration: 0.9, stagger: 0.05, delay: i * 0.08, ease: 'expo.out',
             scrollTrigger: { trigger: g, start: 'top 85%', once: true },
+            clearProps: 'transform,opacity,translate,rotate,scale',
         });
     });
 
     // Statement: words light up as you scroll, then the ledger counts up
     const storyText = $('#story-text');
-    const keyWords = new Set(['build', 'thing', 'myself.']);
+    const keyWords = new Map([['build', 'var(--c2)'], ['thing', 'var(--c4)'], ['myself.', 'var(--c1)']]);
     splitWords(storyText);
     const storyWords = $$('.wi', storyText);
     storyWords.forEach((w) => {
         w.classList.add('story__word');
-        if (keyWords.has(w.textContent)) w.classList.add('is-key');
+        if (keyWords.has(w.textContent)) {
+            w.classList.add('is-key');
+            w.style.setProperty('--kc', keyWords.get(w.textContent));
+        }
     });
     const counters = $$('.counter');
     counters.forEach((c) => { c.textContent = '0'; });
@@ -513,7 +548,10 @@
     const yearEl = $('#xp-year');
     const companyEl = $('#xp-company');
     const yearState = { v: 2025 };
+    const xpNow = $('.xp__now');
     function showRole(role) {
+        const c = (role.className.match(/role--(c\d)/) || [])[1];
+        if (c) xpNow.style.color = `var(--${c})`;
         gsap.to(yearState, { v: +role.dataset.year, duration: 0.8, ease: 'power3.out', onUpdate: () => { yearEl.textContent = Math.round(yearState.v); } });
         if (companyEl.textContent !== role.dataset.company) {
             gsap.fromTo(companyEl, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'expo.out' });
@@ -553,7 +591,11 @@
     const contactTitle = $('#contact-title');
     contactTitle.setAttribute('aria-label', contactTitle.textContent.trim());
     splitWords(contactTitle);
-    $$('.wm', contactTitle).forEach((w) => w.setAttribute('aria-hidden', 'true'));
+    $$('.wm', contactTitle).forEach((w) => {
+        w.setAttribute('aria-hidden', 'true');
+        if (w.textContent === 'great') w.classList.add('c2');
+        if (w.textContent === 'together.') w.classList.add('c1');
+    });
     gsap.from($$('.wi', contactTitle), {
         yPercent: 110,
         duration: 1.2,
@@ -576,6 +618,87 @@
         stagger: 0.04,
         ease: 'expo.out',
         scrollTrigger: { trigger: '.footer', start: 'top 85%', once: true },
+        clearProps: 'transform,translate,rotate,scale',
+    });
+
+    // Hero colour fields drift on their own and lean toward the pointer
+    $$('.blob').forEach((b, i) => {
+        gsap.to(b, {
+            x: () => (i % 2 ? -1 : 1) * innerWidth * 0.06,
+            y: () => (i < 2 ? 1 : -1) * innerHeight * 0.06,
+            scale: 1.15,
+            duration: 9 + i * 2,
+            ease: 'sine.inOut',
+            yoyo: true,
+            repeat: -1,
+        });
+    });
+    if (finePointer) {
+        const blobWrap = $('.hero__blobs');
+        const bx = gsap.quickTo(blobWrap, 'x', { duration: 1.6, ease: 'power3.out' });
+        const by = gsap.quickTo(blobWrap, 'y', { duration: 1.6, ease: 'power3.out' });
+        window.addEventListener('pointermove', (e) => {
+            bx((e.clientX / innerWidth - 0.5) * 60);
+            by((e.clientY / innerHeight - 0.5) * 40);
+        }, { passive: true });
+    }
+
+    // Kinetic band: rows slide in opposite directions as you scroll, and lean with speed
+    const band = $('#kinetic');
+    const bandRows = $$('.kinetic__row', band);
+    bandRows.forEach((row) => {
+        const dir = +row.dataset.dir;
+        gsap.fromTo(row,
+            { x: () => (dir < 0 ? 0 : -(row.scrollWidth - innerWidth)) },
+            {
+                x: () => (dir < 0 ? -(row.scrollWidth - innerWidth) : 0),
+                ease: 'none',
+                scrollTrigger: { trigger: band, start: 'top bottom', end: 'bottom top', scrub: 0.6, invalidateOnRefresh: true },
+            });
+    });
+    const skewTo = bandRows.map((row) => gsap.quickTo(row, 'skewX', { duration: 0.5, ease: 'power3.out' }));
+    ScrollTrigger.create({
+        trigger: band,
+        start: 'top bottom',
+        end: 'bottom top',
+        onUpdate: (self) => {
+            const skew = gsap.utils.clamp(-10, 10, self.getVelocity() / -250);
+            skewTo.forEach((fn) => fn(skew));
+            clearTimeout(band._settle);
+            band._settle = setTimeout(() => skewTo.forEach((fn) => fn(0)), 120);
+        },
+    });
+
+    // Parallax: product visuals drift inside their frames
+    $$('.tile__visual').forEach((v) => {
+        const inner = v.firstElementChild;
+        gsap.fromTo(inner, { y: 40 }, {
+            y: -40,
+            ease: 'none',
+            scrollTrigger: { trigger: v, start: 'top bottom', end: 'bottom top', scrub: true },
+        });
+        gsap.fromTo(v, { clipPath: 'inset(100% 0% 0% 0% round 12px)' }, {
+            clipPath: 'inset(0% 0% 0% 0% round 12px)',
+            duration: 1.3,
+            ease: 'expo.inOut',
+            scrollTrigger: { trigger: v, start: 'top 88%', once: true },
+        });
+    });
+
+    // Section headings drift slightly slower than the page (wider screens only)
+    gsap.matchMedia().add('(min-width: 768px)', () => {
+        $$('.head .h2').forEach((h) => {
+            gsap.fromTo(h, { y: 24 }, {
+                y: -24,
+                ease: 'none',
+                scrollTrigger: { trigger: h, start: 'top bottom', end: 'bottom top', scrub: true },
+            });
+        });
+    });
+
+    // Contact colour fields breathe
+    $$('.contact__blobs i').forEach((b, i) => {
+        gsap.to(b, { xPercent: i % 2 ? -12 : 12, yPercent: i ? 10 : -10, scale: 1.12, duration: 8 + i * 2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
     });
 
     // Re-measure after fonts and images settle

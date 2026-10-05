@@ -47,6 +47,7 @@
     </svg>
 
     <a class="skip-link" href="#main">Skip to content</a>
+    <div class="bg-wash" id="bg-wash" aria-hidden="true"></div>
     <div class="progress" aria-hidden="true"></div>
 
     <!-- ===================== NAV ===================== -->
@@ -106,9 +107,11 @@
     </div>
 
     <!-- ===================== HERO ===================== -->
-    <header id="top" class="hero">
+    <header id="top" class="hero" data-tint="1">
         <div class="hero__sticky">
-            <div class="hero__glow" aria-hidden="true"></div>
+            <div class="hero__blobs" aria-hidden="true">
+                <i class="blob blob--1"></i><i class="blob blob--2"></i><i class="blob blob--3"></i><i class="blob blob--4"></i>
+            </div>
             <div class="hero__fallback" aria-hidden="true"></div>
             <div class="hero__canvas" id="hero-canvas" aria-hidden="true"></div>
 
@@ -118,10 +121,10 @@
                     <span class="line" data-split>Product manager</span>
                     <span class="line"><span data-split>who actually</span>
                         <span class="rotator" id="word-rotator" aria-hidden="true">
-                            <span class="rotator__word">ships.</span>
-                            <span class="rotator__word">builds.</span>
-                            <span class="rotator__word">delivers.</span>
-                            <span class="rotator__word">scales.</span>
+                            <span class="rotator__word c1">ships.</span>
+                            <span class="rotator__word c2">builds.</span>
+                            <span class="rotator__word c4">delivers.</span>
+                            <span class="rotator__word c3">scales.</span>
                         </span>
                     </span>
                 </h1>
@@ -141,7 +144,7 @@
 
     <main id="main">
         <!-- ===================== STATEMENT ===================== -->
-        <section id="story" class="story" aria-label="About">
+        <section id="story" class="story" aria-label="About" data-tint="3">
             <div class="story__pin">
                 <div class="wrap">
                     <p class="kicker" style="text-align: center; margin-bottom: 28px">The short version</p>
@@ -149,19 +152,19 @@
 
                     <div class="ledger">
                         <div class="ledger__item">
-                            <div class="ledger__num"><span class="counter" data-target="5">5</span>+</div>
+                            <div class="ledger__num c1"><span class="counter" data-target="5">5</span>+</div>
                             <div class="ledger__label">Years in product</div>
                         </div>
                         <div class="ledger__item">
-                            <div class="ledger__num"><span class="counter" data-target="3">3</span></div>
+                            <div class="ledger__num c2"><span class="counter" data-target="3">3</span></div>
                             <div class="ledger__label">Products built solo</div>
                         </div>
                         <div class="ledger__item">
-                            <div class="ledger__num"><span class="counter" data-target="95">95</span>%</div>
+                            <div class="ledger__num c4"><span class="counter" data-target="95">95</span>%</div>
                             <div class="ledger__label">On-time delivery</div>
                         </div>
                         <div class="ledger__item">
-                            <div class="ledger__num"><span class="counter" data-target="20">20</span>%</div>
+                            <div class="ledger__num c3"><span class="counter" data-target="20">20</span>%</div>
                             <div class="ledger__label">Efficiency gains shipped</div>
                         </div>
                     </div>
@@ -170,7 +173,7 @@
         </section>
 
         <!-- ===================== SHOWCASE ===================== -->
-        <section id="showcase" class="showcase" aria-label="Pantheon, a closer look">
+        <section id="showcase" class="showcase" aria-label="Pantheon, a closer look" data-tint="1">
             <div class="showcase__pin">
                 <div class="showcase__intro" id="showcase-intro">
                     <p class="kicker" style="margin-bottom: 14px">Pantheon</p>
@@ -210,16 +213,16 @@
                     </div>
 
                     <div class="callouts">
-                        <div class="callout callout--1"><strong>130+ expert personas</strong><span>13 domains, each with its own voice</span></div>
-                        <div class="callout callout--2"><strong>A council, not a chatbot</strong><span>Perspectives that disagree, on purpose</span></div>
-                        <div class="callout callout--3"><strong>Designed and built solo</strong><span>React, Supabase, LLM orchestration</span></div>
+                        <div class="callout callout--1"><strong class="c1">130+ expert personas</strong><span>13 domains, each with its own voice</span></div>
+                        <div class="callout callout--2"><strong class="c2">A council, not a chatbot</strong><span>Perspectives that disagree, on purpose</span></div>
+                        <div class="callout callout--3"><strong class="c4">Designed and built solo</strong><span>React, Supabase, LLM orchestration</span></div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- ===================== PRODUCTS ===================== -->
-        <section id="products" class="section">
+        <section id="products" class="section" data-tint="2">
             <div class="wrap">
                 <div class="head head--center">
                     <h2 class="h2" data-reveal>Products I've built myself</h2>
@@ -228,7 +231,7 @@
 
                 <div class="bento">
                     <!-- Pantheon -->
-                    <article class="tile tile--wide">
+                    <article class="tile tile--wide tile--c1 glow">
                         <div>
                             <div class="tile__top">
                                 <span class="status status--live">Live</span>
@@ -245,7 +248,7 @@
                                 <span class="chip">Supabase</span>
                                 <span class="chip">LLM orchestration</span>
                             </div>
-                            <a class="btn btn--primary tile__cta" href="https://pantheon.so" target="_blank" rel="noopener">
+                            <a class="btn btn--tile tile__cta" href="https://pantheon.so" target="_blank" rel="noopener">
                                 Visit pantheon.so
                                 <svg class="icon icon-arrow-ur"><use href="#i-arrow-up-right"/></svg>
                             </a>
@@ -259,7 +262,7 @@
                     </article>
 
                     <!-- Resume Intelligence -->
-                    <article class="tile">
+                    <article class="tile tile--c2 glow">
                         <div>
                             <div class="tile__top">
                                 <span class="status status--live">Live</span>
@@ -276,7 +279,7 @@
                                 <span class="chip">OpenRouter</span>
                                 <span class="chip">React</span>
                             </div>
-                            <a class="btn btn--ghost tile__cta" href="#contact">
+                            <a class="btn btn--tile tile__cta" href="#contact">
                                 Ask me for a demo
                                 <svg class="icon icon-arrow-r"><use href="#i-arrow-right"/></svg>
                             </a>
@@ -298,7 +301,7 @@
                     </article>
 
                     <!-- DineFlow -->
-                    <article class="tile">
+                    <article class="tile tile--c4 glow">
                         <div>
                             <div class="tile__top">
                                 <span class="status">In development</span>
@@ -327,8 +330,20 @@
             </div>
         </section>
 
+        <!-- ===================== KINETIC BAND (scroll-driven) ===================== -->
+        <section class="kinetic" id="kinetic" aria-hidden="true">
+            <div class="kinetic__row" data-dir="-1">
+                <span class="c1">Discovery</span><span class="o">Roadmaps</span><span class="c2">Shipping</span><span class="o">Experiments</span><span class="c4">Strategy</span><span class="o">PRDs</span>
+                <span class="c1">Discovery</span><span class="o">Roadmaps</span><span class="c2">Shipping</span><span class="o">Experiments</span>
+            </div>
+            <div class="kinetic__row" data-dir="1">
+                <span class="o">React</span><span class="c3">Supabase</span><span class="o">LLMs</span><span class="c4">SQL</span><span class="o">Analytics</span><span class="c2">FastAPI</span>
+                <span class="o">React</span><span class="c3">Supabase</span><span class="o">LLMs</span><span class="c4">SQL</span>
+            </div>
+        </section>
+
         <!-- ===================== EXPERIENCE ===================== -->
-        <section id="experience" class="section">
+        <section id="experience" class="section" data-tint="4">
             <div class="wrap xp">
                 <div class="xp__aside">
                     <p class="kicker" style="margin-bottom: 18px">Career</p>
@@ -342,7 +357,7 @@
                     <span class="timeline__rail" aria-hidden="true"></span>
                     <span class="timeline__fill" id="timeline-fill" aria-hidden="true"></span>
 
-                    <article class="role" data-year="2025" data-company="Whatfix">
+                    <article class="role role--c1" data-year="2025" data-company="Whatfix">
                         <span class="role__dot" aria-hidden="true"></span>
                         <p class="role__when mono">2025 - Present</p>
                         <h3 class="role__title">Product Consultant <em>at Whatfix</em></h3>
@@ -355,7 +370,7 @@
                         <div class="chips"><span class="chip">+15% adoption</span><span class="chip">20% less implementation effort</span></div>
                     </article>
 
-                    <article class="role" data-year="2024" data-company="HeyCoach">
+                    <article class="role role--c2" data-year="2024" data-company="HeyCoach">
                         <span class="role__dot" aria-hidden="true"></span>
                         <p class="role__when mono">2024 - 2025</p>
                         <h3 class="role__title">Product Manager <em>at HeyCoach</em></h3>
@@ -369,7 +384,7 @@
                         <div class="chips"><span class="chip">95% on-time delivery</span><span class="chip">+3% conversion</span></div>
                     </article>
 
-                    <article class="role" data-year="2023" data-company="JustDial">
+                    <article class="role role--c3" data-year="2023" data-company="JustDial">
                         <span class="role__dot" aria-hidden="true"></span>
                         <p class="role__when mono">2023 - 2024</p>
                         <h3 class="role__title">Assistant Product Manager <em>at JustDial</em></h3>
@@ -383,7 +398,7 @@
                         <div class="chips"><span class="chip">95% data accuracy</span><span class="chip">20% less dev time</span></div>
                     </article>
 
-                    <article class="role" data-year="2021" data-company="Pazo">
+                    <article class="role role--c4" data-year="2021" data-company="Pazo">
                         <span class="role__dot" aria-hidden="true"></span>
                         <p class="role__when mono">2021 - 2023</p>
                         <h3 class="role__title">Product Manager <em>at Pazo</em></h3>
@@ -397,7 +412,7 @@
                         <div class="chips"><span class="chip">+10% revenue</span><span class="chip">95% sprint success</span></div>
                     </article>
 
-                    <article class="role" data-year="2021" data-company="Tata Motors Finance">
+                    <article class="role role--c1" data-year="2021" data-company="Tata Motors Finance">
                         <span class="role__dot" aria-hidden="true"></span>
                         <p class="role__when mono">2021</p>
                         <h3 class="role__title">Territory Manager <em>at Tata Motors Finance</em></h3>
@@ -408,7 +423,7 @@
                         </ul>
                     </article>
 
-                    <article class="role edu" data-year="2018" data-company="Balaji Institute">
+                    <article class="role role--c2 edu" data-year="2018" data-company="Balaji Institute">
                         <span class="role__dot" aria-hidden="true"></span>
                         <p class="role__when mono">2018 - 2020</p>
                         <h3 class="role__title">PGDM, Marketing</h3>
@@ -420,13 +435,13 @@
         </section>
 
         <!-- ===================== SKILLS ===================== -->
-        <section id="skills" class="section">
+        <section id="skills" class="section" data-tint="3">
             <div class="wrap">
                 <div class="head head--center">
                     <h2 class="h2" data-reveal>What I bring to the table</h2>
                 </div>
                 <div class="skillset">
-                    <div class="skillset__group">
+                    <div class="skillset__group group--c1">
                         <h3>Product Craft</h3>
                         <ul>
                             <li>Discovery and user research</li>
@@ -436,7 +451,7 @@
                             <li>Agile delivery leadership</li>
                         </ul>
                     </div>
-                    <div class="skillset__group">
+                    <div class="skillset__group group--c2">
                         <h3>Data and Analytics</h3>
                         <ul>
                             <li>SQL and funnel analysis</li>
@@ -446,7 +461,7 @@
                             <li>Unit economics</li>
                         </ul>
                     </div>
-                    <div class="skillset__group">
+                    <div class="skillset__group group--c4">
                         <h3>Technical and AI</h3>
                         <ul>
                             <li>React, TypeScript, Tailwind</li>
@@ -473,24 +488,24 @@
         </section>
 
         <!-- ===================== ACHIEVEMENTS ===================== -->
-        <section id="achievements" class="section">
+        <section id="achievements" class="section" data-tint="2">
             <div class="wrap">
                 <div class="head">
                     <h2 class="h2" data-reveal>Achievements</h2>
                     <p class="lede">A few things I'm proud of.</p>
                 </div>
                 <div class="wins">
-                    <article class="win">
+                    <article class="win win--c3">
                         <span class="win__kind mono">Recognition</span>
                         <h3 class="win__title">Employee of the Month</h3>
                         <p class="win__text">Awarded for driving results while keeping the team's morale up. Of everything on this page, this one means the most to me.</p>
                     </article>
-                    <article class="win">
+                    <article class="win win--c2">
                         <span class="win__kind mono">Builder</span>
                         <h3 class="win__title">Three products shipped solo</h3>
                         <p class="win__text">Pantheon, Resume Intelligence, and DineFlow. All built end to end outside working hours, from idea to live product.</p>
                     </article>
-                    <article class="win">
+                    <article class="win win--c4">
                         <span class="win__kind mono">Delivery</span>
                         <h3 class="win__title">95% on&#8209;time delivery</h3>
                         <p class="win__text">My track record across roadmaps at HeyCoach and Pazo. Mostly down to honest scoping and saying no early.</p>
@@ -500,19 +515,19 @@
         </section>
 
         <!-- ===================== WRITING ===================== -->
-        <section id="writing" class="section">
+        <section id="writing" class="section" data-tint="1">
             <div class="wrap">
                 <div class="head head--center">
                     <h2 class="h2" data-reveal>How I think about product</h2>
                 </div>
                 <div class="essays">
-                    <article class="essay">
+                    <article class="essay essay--c2 glow">
                         <span class="essay__kind mono">Strategy</span>
                         <h3 class="essay__title">Short-term wins are a tax on long-term products</h3>
                         <p class="essay__text">Every quick feature you ship to close one deal is a loan against your roadmap. You pay it back in maintenance, support tickets, and a muddier product story.</p>
                         <p class="essay__text">The best calls I've made as a PM were the requests I said no to, with data and an alternative in hand.</p>
                     </article>
-                    <article class="essay">
+                    <article class="essay essay--c1 glow">
                         <span class="essay__kind mono">AI and Product</span>
                         <h3 class="essay__title">AI turned PMs back into builders</h3>
                         <p class="essay__text">With AI tooling, a PM can prototype the real product instead of a Figma of it. That's how I shipped three products on my own.</p>
@@ -523,8 +538,9 @@
         </section>
 
         <!-- ===================== CONTACT ===================== -->
-        <section id="contact" class="section">
-            <div class="wrap">
+        <section id="contact" class="section" data-tint="4">
+            <div class="wrap contact__wrap">
+                <div class="contact__blobs" aria-hidden="true"><i></i><i></i><i></i></div>
                 <h2 class="display contact__title" id="contact-title">Let's build something great together.</h2>
                 <p class="lede center contact__lede" style="text-align: center">Hiring for a product role, want a second opinion on strategy, or just want to talk SaaS and AI? My inbox is open.</p>
 
